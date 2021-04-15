@@ -8,7 +8,7 @@ import ensureAuthenticated from '@shared/infra/http/middlewares/ensureAuthentica
 import ProfileUserController from '@modules/accounts/useCases/profileUser/ProfileUserController';
 
 const app = Router();
-const uploadAvatar = multer(uploadConfig.upload('./tmp/avatar'));
+const uploadAvatar = multer(uploadConfig);
 
 const createUserController = new CreateUserController();
 const updateUserAvatarController = new UpdateUserAvatarController();
