@@ -8,6 +8,7 @@ import '@shared/container';
 import createConnection from '@shared/infra/typeorm';
 import routes from '@shared/infra/http/routes';
 import AppError from '@shared/errors/AppError';
+import upload from '@config/upload';
 
 createConnection();
 
