@@ -2,6 +2,8 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import 'express-async-errors';
 import express, { NextFunction, Request, Response } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
 import '@shared/container';
 import createConnection from '@shared/infra/typeorm';
 import routes from '@shared/infra/http/routes';
@@ -12,6 +14,8 @@ createConnection();
 const app = express();
 
 app.use(express.json());
+app.use(cors());
+app.use(helmet());
 app.use('/avatar', express.static(`${upload.tmpFolder}/avatar`));
 app.use('/cars', express.static(`${upload.tmpFolder}/cars`));
 
