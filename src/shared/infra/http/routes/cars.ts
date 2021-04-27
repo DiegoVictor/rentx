@@ -10,6 +10,8 @@ import CreateCarSpecificationController from '@modules/cars/useCases/createCarSp
 
 const app = Router();
 const uploadCarImage = multer(uploadConfig);
+
+const createCarController = new CreateCarController();
 const listAvailableCarsController = new ListAvailableCarsController();
 const createCarSpecificationController = new CreateCarSpecificationController();
 app.post('/', ensureAuthenticated, ensureAdmin, createCarController.handle);
