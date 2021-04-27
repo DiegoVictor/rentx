@@ -1,4 +1,7 @@
 import { Router } from 'express';
+import multer from 'multer';
+
+import uploadConfig from '@config/upload';
 import CreateCarController from '@modules/cars/useCases/createCar/CreateCarController';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import ensureAdmin from '../middlewares/ensureAdmin';
@@ -6,6 +9,7 @@ import ListAvailableCarsController from '@modules/cars/useCases/listAvailableCar
 import CreateCarSpecificationController from '@modules/cars/useCases/createCarSpecification/CreateCarSpecificationController';
 
 const app = Router();
+const uploadCarImage = multer(uploadConfig);
 const listAvailableCarsController = new ListAvailableCarsController();
 const createCarSpecificationController = new CreateCarSpecificationController();
 app.post('/', ensureAuthenticated, ensureAdmin, createCarController.handle);
