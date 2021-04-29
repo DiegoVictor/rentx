@@ -2,8 +2,8 @@
   "type": "postgres",
   "host": "127.0.0.1",
   "port": 5432,
-  "username": "",
-  "password": "",
+  "username": "docker",
+  "password": "postgres",
   "database": "rentx",
   "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
   "entities": [
