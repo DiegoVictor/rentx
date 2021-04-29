@@ -5,6 +5,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USERNAME: docker
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: rentx
+      redis:
+        image: redis
     env:
       API_URL: 'http://localhost:3333'
       PORT: '3333'
@@ -13,12 +22,13 @@ jobs:
       JWT_EXPIRATION_TIME: '15m'
       REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
       REFRESH_TOKEN_EXPIRATION_DAYS: '30'
-      DB_HOST: '127.0.0.1'
-      REDIS_HOST: '127.0.0.1'
+      DB_HOST: 'postgres'
+      REDIS_HOST: 'redis'
       REDIS_PORT: '6379'
       REDIS_PASSWORD: ''
       STORAGE_DRIVER: 'local'
       MAIL_DRIVER: 'ethereal'
+      MAIL_SENDER: ${{ secrets.MAIL_SENDER }}
     steps:
       - uses: actions/setup-node@v2
         with:
@@ -36,4 +46,3 @@ jobs:
       - uses: codecov/codecov-action@v1
         with:
           directory: ./tests/coverage/
-
