@@ -1,19 +1,12 @@
-import redis from 'redis';
 import { NextFunction, Request, Response } from 'express';
-import { RateLimiterRedis } from 'rate-limiter-flexible';
+import { container } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
+import IRateLimiterProvider from '@shared/container/providers/RateLimiterProvider/contracts/IRateLimiterProvider';
 
-const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: Number(process.env.REDIS_PORT),
-});
-
-const limiter = new RateLimiterRedis({
-  storeClient: redisClient,
-  points: 10,
-  duration: 5,
-});
+const rateLimitProvider = container.resolve<IRateLimiterProvider>(
+  'RateLimiterProvider'
+);
 
 export default async function rateLimiter(
   request: Request,
@@ -21,7 +14,7 @@ export default async function rateLimiter(
   next: NextFunction
 ) {
   try {
-    await limiter.consume(request.ip);
+    await rateLimitProvider.consume(request.ip);
     return next();
   } catch (err) {
     throw new AppError('Too many requests', 429);
