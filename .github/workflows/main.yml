@@ -11,7 +11,7 @@ jobs:
         env:
           POSTGRES_USERNAME: ${{ secrets.DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: rentx
+          POSTGRES_DB: test
       redis:
         image: redis
     env:
