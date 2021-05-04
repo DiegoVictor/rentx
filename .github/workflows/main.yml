@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Configure typeorm
-        run: cp ormconfig.example.json ormconfig.json
+        run: cp ormconfig.example.js ormconfig.js
 
       - name: Run tests and coverage
         run: |
