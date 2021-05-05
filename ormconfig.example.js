@@ -4,7 +4,7 @@ module.exports = {
   port: 5432,
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: 'rentx',
+  database: process.env.DB_NAME,
   migrations: ['./src/shared/infra/typeorm/migrations/*.ts'],
   entities: ['./src/modules/**/infra/typeorm/entities/*.ts'],
   cli: {
