@@ -41,8 +41,6 @@ describe('Create Category Controller', () => {
       password,
     });
 
-    console.log(token);
-
     await request(app)
       .post('/v1/categories')
       .set({ Authorization: `Bearer ${token}` })
