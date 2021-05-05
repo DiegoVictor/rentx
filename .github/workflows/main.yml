@@ -54,6 +54,7 @@ jobs:
           STORAGE_DRIVER: 'local'
           MAIL_DRIVER: 'ethereal'
           MAIL_SENDER: ${{ secrets.MAIL_SENDER }}
+          NODE_ENV: test
 
       - uses: codecov/codecov-action@v1
         with:
