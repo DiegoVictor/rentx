@@ -53,7 +53,7 @@ jobs:
 
       - name: Run tests and coverage
         run: |
-          npm ci
+          npm install
           npm run test
 
       - uses: codecov/codecov-action@v1
