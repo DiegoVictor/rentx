@@ -5,19 +5,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USERNAME: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: test
-        ports:
-          - 5432:5432
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
     env:
       API_URL: 'http://localhost:3333'
       PORT: '3333'
@@ -35,6 +22,26 @@ jobs:
       STORAGE_DRIVER: 'local'
       MAIL_DRIVER: 'ethereal'
       MAIL_SENDER: ${{ secrets.MAIL_SENDER }}
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USERNAME: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
     steps:
       - uses: actions/setup-node@v2
         with:
@@ -46,7 +53,7 @@ jobs:
 
       - name: Run tests and coverage
         run: |
-          npm install
+          npm ci
           npm run test
 
       - uses: codecov/codecov-action@v1
