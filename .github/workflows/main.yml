@@ -12,8 +12,12 @@ jobs:
           POSTGRES_USERNAME: ${{ secrets.DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
           POSTGRES_DB: test
+        ports:
+          - 5432:5432
       redis:
         image: redis
+        ports:
+          - 6379:6379
     env:
       API_URL: 'http://localhost:3333'
       PORT: '3333'
