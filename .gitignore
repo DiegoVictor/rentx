@@ -4,4 +4,4 @@ tmp/**/*
 !tmp/.gitkeep
 tests/coverage
 dist
-ormconfig.json
+ormconfig.js
