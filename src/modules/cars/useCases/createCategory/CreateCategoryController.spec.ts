@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { Connection, createConnection } from 'typeorm';
+import { Connection, createConnection, getConnectionManager } from 'typeorm';
 import { hash } from 'bcrypt';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -30,7 +30,13 @@ describe('Create Category Controller', () => {
 
   afterAll(async () => {
     await connection.dropDatabase();
-    await connection.close();
+
+    const manager = getConnectionManager();
+    await Promise.all(
+      manager.connections.map((conn) => {
+        return conn.close();
+      })
+    );
   });
 
   it('should be able to create a new category', async () => {
