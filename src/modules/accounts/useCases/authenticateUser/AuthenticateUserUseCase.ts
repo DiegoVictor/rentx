@@ -47,7 +47,7 @@ class AuthenticateUserUseCase {
     } = auth;
 
     if (!user || !(await compare(password, user.password))) {
-      throw new AppError('Email or password incorrect');
+      throw new AppError('Email or password incorrect', 140);
     }
 
     const token = sign({}, secret_token, {

@@ -22,7 +22,7 @@ class CreateUserUseCase {
 
     const user = await this.usersRepository.findByEmail(email);
     if (user) {
-      throw new AppError('User already exists');
+      throw new AppError('User already exists', 240);
     }
 
     await this.usersRepository.create({

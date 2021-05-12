@@ -17,7 +17,7 @@ class CreateSpecificationUseCase {
 
   async execute({ name, description }: IRequest): Promise<void> {
     if (await this.specificationRepository.findByName(name)) {
-      throw new AppError('Specification already exists');
+      throw new AppError('Specification already exists', 540);
     }
 
     await this.specificationRepository.create({ name, description });

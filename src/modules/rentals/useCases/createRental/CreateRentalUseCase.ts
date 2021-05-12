@@ -36,16 +36,19 @@ class CreateRentalUseCase {
     ]);
 
     if (hasCarOpenRental) {
-      throw new AppError('Car is unavailable');
+      throw new AppError('Car is unavailable', 341);
     }
 
     if (hasOpenUserRental) {
-      throw new AppError("There's a rental in progress for this user");
+      throw new AppError("There's a rental in progress for this user", 640);
     }
 
     const minimumDuration = this.dateProvider.add(new Date(), 24, 'hours');
     if (this.dateProvider.isBefore(expected_return_date, minimumDuration)) {
-      throw new AppError('A rental must have at least 24 hours of duration');
+      throw new AppError(
+        'A rental must have at least 24 hours of duration',
+        641
+      );
     }
 
     const [rental] = await Promise.all([

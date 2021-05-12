@@ -31,7 +31,7 @@ class DevolutionRentalUseCase {
     const minimum_daily = 1;
 
     if (!rental) {
-      throw new AppError('Rental does not exists');
+      throw new AppError('Rental does not exists', 644);
     }
 
     let total = 0;

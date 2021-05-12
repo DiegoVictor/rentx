@@ -16,7 +16,7 @@ export default async function ensureAuthenticated(
   const { authorization } = request.headers;
 
   if (!authorization) {
-    throw new AppError('Missing authorization token', 401);
+    throw new AppError('Missing authorization token', 742, 401);
   }
 
   const [, token] = authorization.split(' ');
@@ -28,6 +28,6 @@ export default async function ensureAuthenticated(
 
     next();
   } catch (err) {
-    throw new AppError('Invalid token', 401);
+    throw new AppError('Invalid token', 743, 401);
   }
 }
