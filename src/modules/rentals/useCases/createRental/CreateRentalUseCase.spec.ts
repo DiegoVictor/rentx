@@ -65,7 +65,7 @@ describe('Create Rental', () => {
     await createRentalUseCase.execute(rental);
 
     await expect(createRentalUseCase.execute(rental)).rejects.toEqual(
-      new AppError('Car is unavailable')
+      new AppError('Car is unavailable', 341)
     );
   });
 
@@ -90,7 +90,7 @@ describe('Create Rental', () => {
 
     await expect(
       createRentalUseCase.execute({ ...rental, user_id: '2' })
-    ).rejects.toEqual(new AppError('Car is unavailable'));
+    ).rejects.toEqual(new AppError('Car is unavailable', 341));
   });
 
   it('should not be able to create a new rental with less than 24 hours of duration', async () => {
@@ -101,7 +101,7 @@ describe('Create Rental', () => {
     };
 
     await expect(createRentalUseCase.execute(rental)).rejects.toEqual(
-      new AppError('A rental must have at least 24 hours of duration')
+      new AppError('A rental must have at least 24 hours of duration', 641)
     );
   });
 });
