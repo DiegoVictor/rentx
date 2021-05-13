@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import faker from 'faker';
 
 import RentalsRepositoryInMemory from '@modules/rentals/repositories/in-memory/RentalsRepositoryInMemory';
 import AppError from '@shared/errors/AppError';
@@ -46,7 +47,7 @@ describe('Create Rental', () => {
     expect(rental).toHaveProperty('start_date');
   });
 
-  it('should not be able to rent twice to an user', async () => {
+  it('should not be able to rent twice to a car', async () => {
     const car = await carsRepositoryInMemory.create({
       brand: 'Brand',
       category_id: '1',
@@ -66,6 +67,52 @@ describe('Create Rental', () => {
 
     await expect(createRentalUseCase.execute(rental)).rejects.toEqual(
       new AppError('Car is unavailable', 341)
+    );
+  });
+
+  it('should not be able to rent twice to an user', async () => {
+    const [car1, car2] = await Promise.all([
+      carsRepositoryInMemory.create({
+        id: faker.datatype.uuid(),
+        brand: 'Brand',
+        category_id: '1',
+        daily_rate: 100,
+        description: 'Lorem Ipsum Dolor Sit Amet',
+        fine_amount: 100,
+        license_plate: 'XYZ1234',
+        name: 'Car A',
+      }),
+      carsRepositoryInMemory.create({
+        id: faker.datatype.uuid(),
+        brand: 'Brand',
+        category_id: '1',
+        daily_rate: 150,
+        description: 'Lorem Ipsum Dolor Sit Amet',
+        fine_amount: 200,
+        license_plate: 'XYZ2345',
+        name: 'Car B',
+      }),
+    ]);
+    const expected_return_date = dayjs()
+      .add(25, 'hours')
+      .utc()
+      .local()
+      .toDate();
+
+    await createRentalUseCase.execute({
+      user_id: '1',
+      car_id: car1.id,
+      expected_return_date,
+    });
+
+    await expect(
+      createRentalUseCase.execute({
+        user_id: '1',
+        car_id: car2.id,
+        expected_return_date,
+      })
+    ).rejects.toEqual(
+      new AppError("There's a rental in progress for this user", 640)
     );
   });
 
