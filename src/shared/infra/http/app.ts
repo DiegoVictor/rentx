@@ -5,6 +5,8 @@ import express, { NextFunction, Request, Response } from 'express';
 import swagger from 'swagger-ui-express';
 import cors from 'cors';
 import helmet from 'helmet';
+import { errors } from 'celebrate';
+
 import '@shared/container';
 
 import createConnection from '@shared/infra/typeorm';
@@ -29,6 +31,7 @@ app.use('/cars', express.static(`${upload.tmpFolder}/cars`));
 
 app.use('/v1', routes);
 
+app.use(errors());
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
     if (err instanceof AppError) {
