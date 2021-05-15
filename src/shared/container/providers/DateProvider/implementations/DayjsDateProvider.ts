@@ -19,7 +19,7 @@ class DayjsDateProvider implements IDateProvider {
   }
 
   diffInDays(start_date: Date, end_date: Date): number {
-    return dayjs(this.toUTC(start_date)).diff(this.toUTC(end_date), 'days');
+    return dayjs(this.toUTC(end_date)).diff(this.toUTC(start_date), 'days');
   }
 }
 
