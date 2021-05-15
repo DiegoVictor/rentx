@@ -5,3 +5,4 @@ tmp/**/*
 tests/coverage
 dist
 ormconfig.js
+.vscode
