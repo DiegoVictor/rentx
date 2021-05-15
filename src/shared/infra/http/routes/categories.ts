@@ -6,6 +6,8 @@ import ImportCategoryController from '@modules/cars/useCases/importCategory/Impo
 import ListCategoriesController from '@modules/cars/useCases/listCategories/ListCategoriesController';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import ensureAdmin from '../middlewares/ensureAdmin';
+import { nameAndDescriptionValidator } from '../validators/nameAndDescriptionValidator';
+import { fileUploadValidator } from '../validators/fileUploadValidator';
 
 const app = Router();
 const upload = multer({
@@ -21,14 +23,16 @@ app.post(
   '/',
   ensureAuthenticated,
   ensureAdmin,
+  nameAndDescriptionValidator,
   createCategoryController.handle
 );
 
 app.post(
   '/import',
-  upload.single('file'),
   ensureAuthenticated,
   ensureAdmin,
+  upload.single('file'),
+  fileUploadValidator('file'),
   importCategoryController.handle
 );
 
