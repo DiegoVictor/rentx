@@ -2,7 +2,7 @@ import multer from 'multer';
 import { resolve } from 'path';
 import crypto from 'crypto';
 
-const tmpFolder = resolve(__dirname, '..', '..', 'tmp');
+const tmpFolder = resolve(__dirname, '..', '..', 'tmp').toString();
 
 export default {
   tmpFolder,
