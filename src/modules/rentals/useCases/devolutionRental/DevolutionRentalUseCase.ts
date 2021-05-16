@@ -25,17 +25,18 @@ class DevolutionRentalUseCase {
 
   async execute({ id }: IRequest): Promise<Rental> {
     const rental = await this.rentalsRepository.findById(id);
+    if (!rental) {
+      throw new AppError('Rental does not exists', 644);
+    }
+
     const car = await this.carsRepository.findById(rental.car_id);
 
     const now = new Date();
     const minimum_daily = 1;
 
-    if (!rental) {
-      throw new AppError('Rental does not exists', 644);
-    }
-
     let total = 0;
     let daily = this.dateProvider.diffInDays(rental.start_date, now);
+
     if (daily <= 0) {
       daily = minimum_daily;
     }
