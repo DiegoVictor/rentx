@@ -24,7 +24,7 @@ class UploadCarImagesUseCase {
         new Promise((resolve, reject) => {
           Promise.all([
             this.carsImagesRepository.create(car_id, image),
-            this.storageProvider.save(image, 'cars'),
+            this.storageProvider.save(image, 'cars_images'),
           ])
             .then(resolve)
             .catch(reject);
