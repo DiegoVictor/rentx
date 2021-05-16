@@ -42,18 +42,4 @@ describe('Create Car', () => {
       new AppError('Car already exists', 340)
     );
   });
-
-  it('should be able to create a new car', async () => {
-    const car = await createCarUseCase.execute({
-      name: 'Car',
-      description: 'Lorem Ipsum',
-      daily_rate: 100,
-      license_plate: 'XYZ1234',
-      fine_amount: 60,
-      brand: 'Brand',
-      category_id: 'category_id',
-    });
-
-    expect(car.available).toBeTruthy();
-  });
 });
