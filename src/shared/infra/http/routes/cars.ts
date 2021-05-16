@@ -37,7 +37,7 @@ app.post(
   ensureAdmin,
   idValidator,
   uploadCarImage.array('car_images'),
-  fileUploadValidator('car_images'),
+  fileUploadValidator('car_images', true),
   uploadCarImagesController.handle
 );
 app.get(
