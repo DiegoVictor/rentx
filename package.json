@@ -11,7 +11,6 @@
     "test": "jest --runInBand"
   },
   "dependencies": {
-    "@types/multer": "^1.4.5",
     "aws-sdk": "^2.884.0",
     "bcrypt": "^5.0.1",
     "celebrate": "^14.0.0",
@@ -53,6 +52,7 @@
     "@types/jest": "^26.0.22",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/mime": "^2.0.3",
+    "@types/multer": "^1.4.5",
     "@types/nodemailer": "^6.4.1",
     "@types/redis": "^2.8.28",
     "@types/redis-mock": "^0.17.0",
