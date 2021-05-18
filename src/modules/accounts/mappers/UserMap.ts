@@ -1,4 +1,5 @@
 import { classToClass } from 'class-transformer';
+
 import IUserResponseDTO from '../dtos/IUserResponseDTO';
 import User from '../infra/typeorm/entities/User';
 
