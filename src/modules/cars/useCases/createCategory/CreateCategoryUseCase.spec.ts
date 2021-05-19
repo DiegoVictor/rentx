@@ -1,7 +1,6 @@
-import 'reflect-metadata';
-import CreateCategoryUseCase from './CreateCategoryUseCase';
 import CategoriesRepositoryInMemory from '@modules/cars/repositories/in-memory/CategoriesRepositoryInMemory';
 import AppError from '@shared/errors/AppError';
+import CreateCategoryUseCase from './CreateCategoryUseCase';
 
 describe('Create Category', () => {
   let createCategoryUseCase: CreateCategoryUseCase;
