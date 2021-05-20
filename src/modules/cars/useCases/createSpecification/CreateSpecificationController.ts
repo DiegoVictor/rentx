@@ -10,9 +10,12 @@ class CreateSpecificationController {
     const createSpecificationUseCase = container.resolve(
       CreateSpecificationUseCase
     );
-    await createSpecificationUseCase.execute({ name, description });
+    const specification = await createSpecificationUseCase.execute({
+      name,
+      description,
+    });
 
-    return response.sendStatus(201);
+    return response.status(201).json(specification);
   }
 }
 
