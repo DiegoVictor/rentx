@@ -103,7 +103,7 @@ export default {
   // resetModules: false,
 
   // A path to a custom resolver
-  // resolver: undefined,
+  resolver: './tests/custom_resolver.ts',
 
   // Automatically restore mock state between every test
   // restoreMocks: false,
