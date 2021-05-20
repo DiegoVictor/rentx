@@ -1,40 +1,14 @@
 import request from 'supertest';
 import { Connection, Repository } from 'typeorm';
 import faker from 'faker';
-import { container } from 'tsyringe';
 
 import app from '@shared/infra/http/app';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import createConnection from '@shared/infra/typeorm';
 import UserToken from '@modules/accounts/infra/typeorm/entities/UserTokens';
-import IMailProvider from '@shared/container/providers/MailProvider/contracts/IMailProvider';
-import SESEmailProvider from '@shared/container/providers/MailProvider/implementations/SESEmailProvider';
+import { sendMail } from '../../../../../mocks/nodemailer';
 
-const client = { sendMail: jest.fn() };
-
-jest.mock('nodemailer', () => {
-  return {
-    __esModule: true,
-    default: {
-      async createTestAccount() {
-        return {
-          smtp: {
-            host: '',
-            port: '',
-            secure: '',
-          },
-          user: '',
-          pass: '',
-        };
-      },
-      createTransport() {
-        return client;
-      },
-    },
-  };
-});
-
-describe('Profile User Controller', () => {
+describe('Send Forgot Password Mail Controller', () => {
   let connection: Connection;
   let usersRepository: Repository<User>;
   let usersTokensRepository: Repository<UserToken>;
@@ -45,11 +19,6 @@ describe('Profile User Controller', () => {
 
     usersRepository = connection.getRepository(User);
     usersTokensRepository = connection.getRepository(UserToken);
-
-    container.registerSingleton<IMailProvider>(
-      'MailProvider',
-      SESEmailProvider
-    );
   });
 
   beforeEach(async () => {
@@ -92,7 +61,7 @@ describe('Profile User Controller', () => {
         created_at: expect.any(Date),
       })
     );
-    expect(client.sendMail).toHaveBeenCalledWith({
+    expect(sendMail).toHaveBeenCalledWith({
       to: user.email,
       from: `Rentx <${process.env.MAIL_SENDER}>`,
       subject: 'Recuperação de senha',
