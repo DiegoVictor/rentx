@@ -28,11 +28,12 @@ class ImportCategoryUseCase {
         .on('data', async ([name, description]) => {
           categories.push({ name, description });
         })
-        .on('end', () => {
-          fs.promises.unlink(file.path);
+        .on('end', async () => {
+          await fs.promises.unlink(file.path);
           resolve(categories);
         })
-        .on('error', (err) => {
+        .on('error', async (err) => {
+          await fs.promises.unlink(file.path);
           reject(err);
         });
     });
@@ -41,12 +42,15 @@ class ImportCategoryUseCase {
   async execute(file: Express.Multer.File): Promise<void> {
     const categories = await this.loadCategories(file);
 
-    categories.map(async ({ name, description }) => {
-      const category = await this.categoryRepository.findByName(name);
-      if (!category) {
-        await this.categoryRepository.create({ name, description });
-      }
-    });
+    await Promise.all(
+      categories.map(({ name, description }) =>
+        this.categoryRepository.findByName(name).then((category) => {
+          if (!category) {
+            return this.categoryRepository.create({ name, description });
+          }
+        })
+      )
+    );
   }
 }
 
