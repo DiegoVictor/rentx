@@ -7,6 +7,8 @@ import UsersTokensRepositoryInMemory from '@modules/accounts/repositories/in-mem
 import DayjsDateProvider from '@shared/container/providers/DateProvider/implementations/DayjsDateProvider';
 import ResetUserPasswordUseCase from './ResetUserPasswordUseCase';
 import AppError from '@shared/errors/AppError';
+import User from '@modules/accounts/infra/typeorm/entities/User';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Reset Password', () => {
   let usersTokensRepositoryInMemory: UsersTokensRepositoryInMemory;
@@ -27,14 +29,17 @@ describe('Reset Password', () => {
   });
 
   it('should be able to reset the password', async () => {
-    const password = faker.internet.password();
-    const user = await usersRepositoryInMemory.create({
-      driver_license: faker.vehicle.vrm(),
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      password: await hash(faker.internet.password(), 8),
-    });
+    const newPassword = faker.internet.password();
     const refresh_token = faker.datatype.uuid();
+    const { driver_license, email, password, name } = await factory.attrs<User>(
+      'User'
+    );
+    const user = await usersRepositoryInMemory.create({
+      driver_license,
+      email,
+      name,
+      password: await hash(password, 8),
+    });
 
     const userToken = await usersTokensRepositoryInMemory.create({
       expires_date: dayjs().add(3, 'hours').toDate(),
@@ -43,11 +48,11 @@ describe('Reset Password', () => {
     });
 
     await resetUserPasswordUseCase.execute({
-      password,
+      password: newPassword,
       refresh_token,
     });
 
-    expect(await compare(password, user.password)).toBeTruthy();
+    expect(await compare(newPassword, user.password)).toBeTruthy();
     expect(
       usersTokensRepositoryInMemory.usersTokens.includes(userToken)
     ).toBeFalsy();
@@ -66,12 +71,15 @@ describe('Reset Password', () => {
   });
 
   it('should not be able to reset the password with expired refresh token', async () => {
-    const password = faker.internet.password();
+    const newPassword = faker.internet.password();
+    const { driver_license, email, password, name } = await factory.attrs<User>(
+      'User'
+    );
     const user = await usersRepositoryInMemory.create({
-      driver_license: faker.vehicle.vrm(),
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      password: await hash(faker.internet.password(), 8),
+      driver_license,
+      email,
+      name,
+      password: await hash(password, 8),
     });
     const refresh_token = faker.datatype.uuid();
 
@@ -83,7 +91,7 @@ describe('Reset Password', () => {
 
     await expect(
       resetUserPasswordUseCase.execute({
-        password,
+        password: newPassword,
         refresh_token,
       })
     ).rejects.toEqual(new AppError('Token expired', 142));

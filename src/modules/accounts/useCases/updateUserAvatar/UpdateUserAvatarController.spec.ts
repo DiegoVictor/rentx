@@ -8,19 +8,17 @@ import fs from 'fs';
 import app from '@shared/infra/http/app';
 import createConnection from '@shared/infra/typeorm';
 import User from '@modules/accounts/infra/typeorm/entities/User';
-import Category from '@modules/cars/infra/typeorm/entities/Category';
 import upload from '@config/upload';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Update User Controller', () => {
   let connection: Connection;
-  let categoriesRepository: Repository<Category>;
   let usersRepository: Repository<User>;
 
   beforeAll(async () => {
     connection = await createConnection();
     await connection.runMigrations();
 
-    categoriesRepository = connection.getRepository(Category);
     usersRepository = connection.getRepository(User);
   });
 
@@ -35,13 +33,7 @@ describe('Update User Controller', () => {
   });
 
   it('should be able to set user avatar', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
+    const user = await factory.attrs<User>('User');
 
     const { id: user_id } = await usersRepository.save(
       usersRepository.create({
@@ -96,13 +88,7 @@ describe('Update User Controller', () => {
   });
 
   it('should be able to update user avatar', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
+    const user = await factory.attrs<User>('User');
 
     const oldFileName = `${faker.datatype.uuid()}.png`;
     const { id: user_id } = await usersRepository.save(

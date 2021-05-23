@@ -7,6 +7,7 @@ import User from '@modules/accounts/infra/typeorm/entities/User';
 import createConnection from '@shared/infra/typeorm';
 import UserToken from '@modules/accounts/infra/typeorm/entities/UserTokens';
 import { sendMail } from '../../../../../mocks/nodemailer';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Send Forgot Password Mail Controller', () => {
   let connection: Connection;
@@ -32,12 +33,7 @@ describe('Send Forgot Password Mail Controller', () => {
   });
 
   it('should be able to send a forgot password mail to user', async () => {
-    const user = {
-      email: faker.internet.email().toLowerCase(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-    };
+    const user = await factory.attrs<User>('User');
 
     const { id: user_id } = await usersRepository.save(
       usersRepository.create(user)

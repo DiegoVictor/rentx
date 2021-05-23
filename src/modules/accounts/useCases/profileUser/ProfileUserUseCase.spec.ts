@@ -3,6 +3,8 @@ import faker from 'faker';
 import AppError from '@shared/errors/AppError';
 import UsersRepositoryInMemory from '@modules/accounts/repositories/in-memory/UsersRepositoryInMemory';
 import ProfileUserUseCase from './ProfileUserUseCase';
+import User from '@modules/accounts/infra/typeorm/entities/User';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Profile User', () => {
   let profileUserUseCase: ProfileUserUseCase;
@@ -14,17 +16,12 @@ describe('Profile User', () => {
   });
 
   it('should be able to retrieve profile', async () => {
-    const user = {
-      driver_license: '000001',
-      email: 'johndoe@example.com',
-      name: 'John Doe',
-    };
-    const { id } = await usersRepositoryInMemory.create({
-      password: '123456',
-      ...user,
-    });
+    const user = await factory.attrs<User>('User');
 
+    const { id } = await usersRepositoryInMemory.create(user);
     const result = await profileUserUseCase.execute(id);
+
+    delete user.password;
 
     expect(result).toStrictEqual({
       id: expect.any(String),

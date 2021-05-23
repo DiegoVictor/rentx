@@ -1,10 +1,11 @@
 import AppError from '@shared/errors/AppError';
-import ICreateUserDTO from '@modules/accounts/dtos/ICreateUserDTO';
 import UsersRepositoryInMemory from '@modules/accounts/repositories/in-memory/UsersRepositoryInMemory';
 import CreateUserUseCase from '../createUser/CreateUserUseCase';
 import AuthenticateUserUseCase from './AuthenticateUserUseCase';
 import DayjsDateProvider from '@shared/container/providers/DateProvider/implementations/DayjsDateProvider';
 import UsersTokensRepositoryInMemory from '@modules/accounts/repositories/in-memory/UsersTokensRepositoryInMemory';
+import User from '@modules/accounts/infra/typeorm/entities/User';
+import factory from '../../../../../tests/utils/factory';
 
 jest.mock('@config/auth', () => {
   return {
@@ -36,12 +37,7 @@ describe('Authenticate User', () => {
   });
 
   it('should be able to authenticate an user', async () => {
-    const user: ICreateUserDTO = {
-      driver_license: '000001',
-      email: 'johndoe@example.com',
-      password: '123456',
-      name: 'John Doe',
-    };
+    const user = await factory.attrs<User>('User');
 
     await createUserUseCase.execute(user);
 
@@ -59,21 +55,17 @@ describe('Authenticate User', () => {
   });
 
   it('should not be able to authenticate with a non existing user', async () => {
+    const { email, password } = await factory.attrs<User>('User');
     await expect(
       authenticateUserUseCase.execute({
-        email: 'johndoe@example.com',
-        password: '123456',
+        email,
+        password,
       })
     ).rejects.toEqual(new AppError('Email or password incorrect', 140));
   });
 
   it('should not be able to authenticate with incorrect password', async () => {
-    const user: ICreateUserDTO = {
-      driver_license: '000001',
-      email: 'johndoe@example.com',
-      password: '123456',
-      name: 'John Doe',
-    };
+    const user = await factory.attrs<User>('User');
 
     await createUserUseCase.execute(user);
 

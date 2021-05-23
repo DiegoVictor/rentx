@@ -1,10 +1,10 @@
 import request from 'supertest';
 import { Connection, Repository } from 'typeorm';
-import faker from 'faker';
 
 import app from '@shared/infra/http/app';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import createConnection from '@shared/infra/typeorm';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Create User Controller', () => {
   let connection: Connection;
@@ -27,36 +27,27 @@ describe('Create User Controller', () => {
   });
 
   it('should be able to create a new user', async () => {
-    const user = {
-      email: faker.internet.email(),
-
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-    };
-    const response = await request(app)
-      .post('/v1/users')
-      .expect(201)
-      .send({
-        ...user,
-        username: faker.internet.userName(),
-        password: faker.internet.password(),
-      });
+    const { driver_license, email, password, name } = await factory.attrs<User>(
+      'User'
+    );
+    const response = await request(app).post('/v1/users').expect(201).send({
+      email,
+      name,
+      driver_license,
+      password,
+    });
 
     expect(response.body).toStrictEqual({
       id: expect.any(String),
       avatar_url: expect.any(String),
-      ...user,
+      email,
+      name,
+      driver_license,
     });
   });
 
   it('should not be able to create a new user', async () => {
-    const user = {
-      username: faker.internet.userName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-    };
+    const user = await factory.attrs<User>('User');
 
     await usersRepository.save(usersRepository.create(user));
 

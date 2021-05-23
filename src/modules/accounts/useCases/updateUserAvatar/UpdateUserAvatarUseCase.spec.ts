@@ -6,6 +6,8 @@ import upload from '@config/upload';
 import UsersRepositoryInMemory from '@modules/accounts/repositories/in-memory/UsersRepositoryInMemory';
 import LocalStorageProvider from '@shared/container/providers/StorageProvider/implementations/LocalStorageProvider';
 import UpdateUserAvatarUseCase from './UpdateUserAvatarUseCase';
+import User from '@modules/accounts/infra/typeorm/entities/User';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Update User Avatar', () => {
   let updateUserAvatarUseCase: UpdateUserAvatarUseCase;
@@ -24,6 +26,9 @@ describe('Update User Avatar', () => {
   it('should be able to set user avatar', async () => {
     const avatarFile = `${faker.datatype.uuid()}.png`;
     const filePath = path.resolve(upload.tmpFolder, avatarFile).toString();
+    const { driver_license, email, password, name } = await factory.attrs<User>(
+      'User'
+    );
 
     await fs.promises.writeFile(
       filePath,
@@ -31,10 +36,10 @@ describe('Update User Avatar', () => {
     );
 
     const user = await usersRepositoryInMemory.create({
-      password: faker.internet.password(),
-      driver_license: faker.random.alphaNumeric(11),
-      email: faker.internet.email(),
-      name: faker.name.findName(),
+      password,
+      driver_license,
+      email,
+      name,
     });
 
     expect(user.avatar).toBe(undefined);
@@ -73,11 +78,14 @@ describe('Update User Avatar', () => {
       ),
     ]);
 
+    const { driver_license, email, password, name } = await factory.attrs<User>(
+      'User'
+    );
     const user = await usersRepositoryInMemory.create({
-      password: faker.internet.password(),
-      driver_license: faker.random.alphaNumeric(11),
-      email: faker.internet.email(),
-      name: faker.name.findName(),
+      password,
+      driver_license,
+      email,
+      name,
     });
 
     user.avatar = oldAvatarFile;

@@ -8,6 +8,7 @@ import app from '@shared/infra/http/app';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import createConnection from '@shared/infra/typeorm';
 import auth from '@config/auth';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Refresh Token Controller', () => {
   let connection: Connection;
@@ -31,12 +32,7 @@ describe('Refresh Token Controller', () => {
   });
 
   it('should be able to retrieve a new token and refresh token sending old refresh token at the body', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-    };
+    const user = await factory.attrs<User>('User');
 
     await usersRepository.save(
       usersRepository.create({
@@ -64,12 +60,7 @@ describe('Refresh Token Controller', () => {
   });
 
   it('should be able to retrieve a new token and refresh token sending old refresh token in headers', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-    };
+    const user = await factory.attrs<User>('User');
 
     await usersRepository.save(
       usersRepository.create({
@@ -98,12 +89,7 @@ describe('Refresh Token Controller', () => {
   });
 
   it('should be able to retrieve a new token and refresh token sending old refresh token in query parameters', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-    };
+    const user = await factory.attrs<User>('User');
 
     await usersRepository.save(
       usersRepository.create({

@@ -8,6 +8,7 @@ import app from '@shared/infra/http/app';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import createConnection from '@shared/infra/typeorm';
 import auth from '@config/auth';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Profile User Controller', () => {
   let connection: Connection;
@@ -31,17 +32,12 @@ describe('Profile User Controller', () => {
   });
 
   it('should be able to retrieve profile', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-    };
-    const password = faker.internet.password();
+    const user = await factory.attrs<User>('User');
 
     await usersRepository.save(
       usersRepository.create({
         ...user,
-        password: await hash(password, 8),
+        password: await hash(user.password, 8),
       })
     );
 
@@ -49,7 +45,7 @@ describe('Profile User Controller', () => {
       body: { token },
     } = await request(app).post('/v1/sessions').send({
       email: user.email,
-      password,
+      password: user.password,
     });
 
     const response = await request(app)
@@ -57,6 +53,8 @@ describe('Profile User Controller', () => {
       .set({ Authorization: `Bearer ${token}` })
       .expect(200)
       .send();
+
+    delete user.password;
 
     expect(response.body).toStrictEqual({
       id: expect.any(String),

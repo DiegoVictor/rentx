@@ -6,6 +6,8 @@ import DayjsDateProvider from '@shared/container/providers/DateProvider/implemen
 import MailProviderInMemory from '@shared/container/providers/MailProvider/in-memory/MailProviderInMemory';
 import AppError from '@shared/errors/AppError';
 import SendForgotPasswordMailUseCase from './SendForgotPasswordMailUseCase';
+import User from '@modules/accounts/infra/typeorm/entities/User';
+import factory from '../../../../../tests/utils/factory';
 
 const refresh_token = v4();
 jest.mock('uuid', () => {
@@ -38,17 +40,10 @@ describe('Send Forgot Password Mail', () => {
   });
 
   it('should be able to send a forgot password mail to user', async () => {
-    const user = {
-      driver_license: 'XYZ1234',
-      email: 'john@example.com',
-      name: 'John',
-      password: '123456',
-    };
-
+    const user = await factory.attrs<User>('User');
     await usersRepository.create(user);
 
     const sendMail = jest.spyOn(mailProvider, 'sendMail');
-
     await sendForgotPasswordMailUseCase.execute(user.email);
 
     expect(sendMail).toHaveBeenCalledWith(
@@ -69,13 +64,15 @@ describe('Send Forgot Password Mail', () => {
 
   it('should be able to create reset password token', async () => {
     const create = jest.spyOn(usersTokensRepository, 'create');
+    const { driver_license, email, password, name } = await factory.attrs<User>(
+      'User'
+    );
 
-    const email = 'john@example.com';
     await usersRepository.create({
-      driver_license: 'XYZ1234',
+      driver_license,
       email,
-      name: 'John',
-      password: '123456',
+      name,
+      password,
     });
     const user = await usersRepository.findByEmail(email);
 
