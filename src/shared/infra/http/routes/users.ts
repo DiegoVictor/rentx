@@ -6,7 +6,7 @@ import UpdateUserAvatarController from '@modules/accounts/useCases/updateUserAva
 import uploadConfig from '@config/upload';
 import ensureAuthenticated from '@shared/infra/http/middlewares/ensureAuthenticated';
 import ProfileUserController from '@modules/accounts/useCases/profileUser/ProfileUserController';
-import { nameUserNameEmailDriverLicensePasswordValidator } from '../validators/nameUserNameEmailDriverLicensePasswordValidator';
+import { nameEmailDriverLicensePasswordValidator } from '../validators/nameEmailDriverLicensePasswordValidator';
 import { fileUploadValidator } from '../validators/fileUploadValidator';
 
 const app = Router();
@@ -19,7 +19,7 @@ const profileUserController = new ProfileUserController();
 app.get('/', ensureAuthenticated, profileUserController.handle);
 app.post(
   '/',
-  nameUserNameEmailDriverLicensePasswordValidator,
+  nameEmailDriverLicensePasswordValidator,
   createUserController.handle
 );
 app.patch(
