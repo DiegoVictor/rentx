@@ -163,8 +163,6 @@ describe('Import Category Controller', () => {
       categories.map(({ name }) => categoriesRepository.findOne({ name }))
     );
 
-    console.log(categories);
-
     categories.forEach(({ name, description }) => {
       expect(responses).toContainEqual({
         id: expect.any(String),
