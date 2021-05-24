@@ -43,10 +43,11 @@ describe('Send Forgot Password Mail Controller', () => {
       })
     );
 
-    await request(app)
+    const { body } = await request(app)
       .post('/v1/password/forgot')
-      .expect(204)
+      // .expect(204)
       .send({ email: user.email });
+    console.log(body);
 
     const token = await usersTokensRepository.findOne({
       user_id,
