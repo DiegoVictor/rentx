@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-export const sendMail = jest.fn();
+export const sendMail = jest.fn(() => ({ messageId: faker.datatype.uuid() }));
 
 export default {
   async createTestAccount() {
