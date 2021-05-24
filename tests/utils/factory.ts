@@ -11,4 +11,15 @@ factory.define(
     email: faker.internet.email,
   }
 );
+
+factory.define(
+  'Rental',
+  {},
+  {
+    user_id: faker.datatype.uuid,
+    car_id: faker.datatype.uuid,
+    expected_return_date: faker.date.future,
+  }
+);
+
 export default factory;
