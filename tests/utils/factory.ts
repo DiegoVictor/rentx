@@ -41,6 +41,7 @@ factory.define(
     fine_amount: () => Number(faker.finance.amount()),
     license_plate: faker.vehicle.vrm,
     name: faker.vehicle.vehicle,
+    available: true,
   }
 );
 
