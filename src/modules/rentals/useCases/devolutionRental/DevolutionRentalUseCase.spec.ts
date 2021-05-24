@@ -7,6 +7,8 @@ import DayjsDateProvider from '@shared/container/providers/DateProvider/implemen
 import CarsRepositoryInMemory from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
 import DevolutionRentalUseCase from './DevolutionRentalUseCase';
 import AppError from '@shared/errors/AppError';
+import Rental from '@modules/rentals/infra/typeorm/entities/Rental';
+import factory from '../../../../../tests/utils/factory';
 
 dayjs.extend(utc);
 
@@ -38,13 +40,19 @@ describe('Devolution Rental', () => {
       name: faker.vehicle.model(),
     });
 
-    const rental = await rentalsRepositoryInMemory.create({
-      user_id: faker.datatype.uuid(),
+    const {
+      user_id,
+      car_id,
+      expected_return_date,
+    } = await factory.attrs<Rental>('Rental', {
       car_id: car.id,
       expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
     });
-
-    rental.start_date = dayjs().subtract(2, 'hours').utc().local().toDate();
+    const rental = await rentalsRepositoryInMemory.create({
+      user_id,
+      car_id,
+      expected_return_date,
+    });
 
     const devolution = await devolutionRentalUseCase.execute({ id: rental.id });
 
@@ -62,13 +70,19 @@ describe('Devolution Rental', () => {
       name: faker.vehicle.model(),
     });
 
-    const rental = await rentalsRepositoryInMemory.create({
-      user_id: faker.datatype.uuid(),
+    const {
+      user_id,
+      car_id,
+      expected_return_date,
+    } = await factory.attrs<Rental>('Rental', {
       car_id: car.id,
       expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
     });
-
-    rental.start_date = dayjs().subtract(72, 'hours').utc().local().toDate();
+    const rental = await rentalsRepositoryInMemory.create({
+      user_id,
+      car_id,
+      expected_return_date,
+    });
 
     const devolution = await devolutionRentalUseCase.execute({ id: rental.id });
 
@@ -86,14 +100,22 @@ describe('Devolution Rental', () => {
       name: faker.vehicle.model(),
     });
 
-    const rental = await rentalsRepositoryInMemory.create({
-      user_id: faker.datatype.uuid(),
+    const {
+      user_id,
+      car_id,
+      expected_return_date,
+    } = await factory.attrs<Rental>('Rental', {
       car_id: car.id,
       expected_return_date: dayjs()
         .subtract(25, 'hours')
         .utc()
         .local()
         .toDate(),
+    });
+    const rental = await rentalsRepositoryInMemory.create({
+      user_id,
+      car_id,
+      expected_return_date,
     });
 
     const devolution = await devolutionRentalUseCase.execute({ id: rental.id });

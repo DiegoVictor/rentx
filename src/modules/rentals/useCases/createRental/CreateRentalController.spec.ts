@@ -10,6 +10,7 @@ import createConnection from '@shared/infra/typeorm';
 import Car from '@modules/cars/infra/typeorm/entities/Car';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import Rental from '@modules/rentals/infra/typeorm/entities/Rental';
+import factory from '../../../../../tests/utils/factory';
 
 dayjs.extend(utc);
 
@@ -66,10 +67,11 @@ describe('Create Rental Controller', () => {
       carsRepository.save(carsRepository.create(car)),
     ]);
 
-    const rental = {
+    const rental = await factory.attrs<Rental>('Rental', {
       car_id,
       expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
-    };
+    });
+    delete rental.user_id;
 
     const {
       body: { token },
@@ -121,10 +123,11 @@ describe('Create Rental Controller', () => {
       carsRepository.save(carsRepository.create(car)),
     ]);
 
-    const rental = {
+    const rental = await factory.attrs<Rental>('Rental', {
       car_id,
       expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
-    };
+    });
+    delete rental.user_id;
 
     const {
       body: { token },
@@ -187,10 +190,11 @@ describe('Create Rental Controller', () => {
       carsRepository.save(carsRepository.create(car2)),
     ]);
 
-    const rental = {
-      car_id: car1_id,
+    const rental = await factory.attrs<Rental>('Rental', {
+      car_id: carA_id,
       expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
-    };
+    });
+    delete rental.user_id;
 
     const {
       body: { token },
@@ -243,10 +247,11 @@ describe('Create Rental Controller', () => {
       carsRepository.save(carsRepository.create(car)),
     ]);
 
-    const rental = {
+    const rental = await factory.attrs<Rental>('Rental', {
       car_id,
       expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
-    };
+    });
+    delete rental.user_id;
 
     await rentalsRepository.save(
       rentalsRepository.create({
@@ -288,10 +293,10 @@ describe('Create Rental Controller', () => {
       })
     );
 
-    const rental = {
-      car_id: faker.datatype.uuid(),
+    const rental = await factory.attrs<Rental>('Rental', {
       expected_return_date: dayjs().add(2, 'hours').utc().local().toDate(),
-    };
+    });
+    delete rental.user_id;
 
     const {
       body: { token },
