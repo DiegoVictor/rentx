@@ -12,6 +12,14 @@ factory.define(
   }
 );
 
+factory.define(
+  'Category',
+  {},
+  {
+    name: faker.vehicle.type,
+    description: faker.lorem.sentence,
+  }
+);
 
 factory.define(
   'Car',
