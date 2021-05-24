@@ -12,6 +12,21 @@ factory.define(
   }
 );
 
+
+factory.define(
+  'Car',
+  {},
+  {
+    brand: faker.vehicle.manufacturer,
+    category_id: null,
+    daily_rate: () => Number(faker.finance.amount()),
+    description: faker.lorem.sentence,
+    fine_amount: () => Number(faker.finance.amount()),
+    license_plate: faker.vehicle.vrm,
+    name: faker.vehicle.vehicle,
+  }
+);
+
 factory.define(
   'Rental',
   {},
