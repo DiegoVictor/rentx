@@ -1,6 +1,5 @@
 import request from 'supertest';
 import { Connection, Repository } from 'typeorm';
-import faker from 'faker';
 import { hash } from 'bcrypt';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -40,22 +39,8 @@ describe('Create Rental Controller', () => {
   });
 
   it('should be able to create a new rental', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
+    const user = await factory.attrs<User>('User');
+    const car = await factory.attrs<Car>('Car');
 
     const [{ id: user_id }, { id: car_id }] = await Promise.all([
       usersRepository.save(
@@ -96,22 +81,8 @@ describe('Create Rental Controller', () => {
   });
 
   it('should not be able to rent twice to a car', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
+    const user = await factory.attrs<User>('User');
+    const car = await factory.attrs<Car>('Car');
 
     const [, { id: car_id }] = await Promise.all([
       usersRepository.save(
@@ -153,41 +124,18 @@ describe('Create Rental Controller', () => {
   });
 
   it('should not be able to rent twice to an user', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
-    const car1 = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
-    const car2 = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
+    const user = await factory.attrs<User>('User');
+    const [carA, carB] = await factory.attrsMany<Car>('Car', 2);
 
-    const [, { id: car1_id }, { id: car2_id }] = await Promise.all([
+    const [, { id: carA_id }, { id: carB_id }] = await Promise.all([
       usersRepository.save(
         usersRepository.create({
           ...user,
           password: await hash(user.password, 8),
         })
       ),
-      carsRepository.save(carsRepository.create(car1)),
-      carsRepository.save(carsRepository.create(car2)),
+      carsRepository.save(carsRepository.create(carA)),
+      carsRepository.save(carsRepository.create(carB)),
     ]);
 
     const rental = await factory.attrs<Rental>('Rental', {
@@ -212,7 +160,7 @@ describe('Create Rental Controller', () => {
       .post('/v1/rentals')
       .set({ Authorization: `Bearer ${token}` })
       .expect(400)
-      .send({ ...rental, car_id: car2_id });
+      .send({ ...rental, car_id: carB_id });
 
     expect(response.body).toStrictEqual({
       message: "There's a rental in progress for this user",
@@ -220,24 +168,10 @@ describe('Create Rental Controller', () => {
   });
 
   it('should not be able to create a new rental to a unavailable car', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
+    const user = await factory.attrs<User>('User');
+    const car = await factory.attrs<Car>('Car');
 
-    const [{ id: user_id }, { id: car_id, available }] = await Promise.all([
+    const [{ id: user_id }, { id: car_id }] = await Promise.all([
       usersRepository.save(
         usersRepository.create({
           ...user,
@@ -278,13 +212,7 @@ describe('Create Rental Controller', () => {
   });
 
   it('should not be able to create a new rental with less than 24 hours of duration', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
+    const user = await factory.attrs<User>('User');
 
     await usersRepository.save(
       usersRepository.create({

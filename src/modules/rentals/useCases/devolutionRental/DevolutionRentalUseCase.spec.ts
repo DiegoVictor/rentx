@@ -7,6 +7,7 @@ import DayjsDateProvider from '@shared/container/providers/DateProvider/implemen
 import CarsRepositoryInMemory from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
 import DevolutionRentalUseCase from './DevolutionRentalUseCase';
 import AppError from '@shared/errors/AppError';
+import Car from '@modules/cars/infra/typeorm/entities/Car';
 import Rental from '@modules/rentals/infra/typeorm/entities/Rental';
 import factory from '../../../../../tests/utils/factory';
 
@@ -30,14 +31,23 @@ describe('Devolution Rental', () => {
   });
 
   it('should be able to give back a rental before 24 hours', async () => {
+    const {
+      brand,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
+      category_id,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.model(),
+      brand,
+      category_id,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
     });
 
     const {
@@ -60,14 +70,23 @@ describe('Devolution Rental', () => {
   });
 
   it('should be able to give back a rental after 24 hours', async () => {
+    const {
+      brand,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
+      category_id,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.model(),
+      brand,
+      category_id,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
     });
 
     const {
@@ -90,14 +109,23 @@ describe('Devolution Rental', () => {
   });
 
   it('should be able to give back a rental before expected', async () => {
+    const {
+      brand,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
+      category_id,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.model(),
+      brand,
+      category_id,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
     });
 
     const {

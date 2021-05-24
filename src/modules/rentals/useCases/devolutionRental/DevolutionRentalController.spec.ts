@@ -10,6 +10,7 @@ import createConnection from '@shared/infra/typeorm';
 import Car from '@modules/cars/infra/typeorm/entities/Car';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import Rental from '@modules/rentals/infra/typeorm/entities/Rental';
+import factory from '../../../../../tests/utils/factory';
 
 dayjs.extend(utc);
 
@@ -41,22 +42,8 @@ describe('Devolution Rental Controller', () => {
   });
 
   it('should be able to give back a rental before 24 hours', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
+    const user = await factory.attrs<User>('User');
+    const car = await factory.attrs<Car>('Car');
 
     const [{ id: user_id }, { id: car_id }] = await Promise.all([
       usersRepository.save(
@@ -110,22 +97,8 @@ describe('Devolution Rental Controller', () => {
   });
 
   it('should be able to give back a rental after 24 hours', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
+    const user = await factory.attrs<User>('User');
+    const car = await factory.attrs<Car>('Car');
 
     const [{ id: user_id }, { id: car_id }] = await Promise.all([
       usersRepository.save(
@@ -180,22 +153,8 @@ describe('Devolution Rental Controller', () => {
   });
 
   it('should be able to give back a rental before expected', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
+    const user = await factory.attrs<User>('User');
+    const car = await factory.attrs<Car>('Car');
 
     const [{ id: user_id }, { id: car_id }] = await Promise.all([
       usersRepository.save(
@@ -253,13 +212,7 @@ describe('Devolution Rental Controller', () => {
   });
 
   it('should not be able to give back a non existing rental', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
+    const user = await factory.attrs<User>('User');
 
     await Promise.all([
       usersRepository.save(

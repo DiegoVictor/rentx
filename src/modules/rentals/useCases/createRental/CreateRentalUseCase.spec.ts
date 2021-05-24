@@ -7,6 +7,7 @@ import AppError from '@shared/errors/AppError';
 import CreateRentalUseCase from './CreateRentalUseCase';
 import DayjsDateProvider from '@shared/container/providers/DateProvider/implementations/DayjsDateProvider';
 import CarsRepositoryInMemory from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
+import Car from '@modules/cars/infra/typeorm/entities/Car';
 import factory from '../../../../../tests/utils/factory';
 import Rental from '@modules/rentals/infra/typeorm/entities/Rental';
 
@@ -30,14 +31,23 @@ describe('Create Rental', () => {
   });
 
   it('should be able to create a new rental', async () => {
+    const {
+      brand,
+      category_id,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
-      brand: 'Brand',
-      category_id: '1',
-      daily_rate: 100,
-      description: 'Lorem Ipsum Dolor Sit Amer',
-      fine_amount: 100,
-      license_plate: 'XYZ1234',
-      name: 'Car A',
+      brand,
+      category_id,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
     });
 
     const {
@@ -60,14 +70,23 @@ describe('Create Rental', () => {
   });
 
   it('should not be able to rent twice to a car', async () => {
+    const {
+      brand,
+      category_id,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
-      brand: 'Brand',
-      category_id: '1',
-      daily_rate: 100,
-      description: 'Lorem Ipsum Dolor Sit Amer',
-      fine_amount: 100,
-      license_plate: 'XYZ1234',
-      name: 'Car A',
+      brand,
+      category_id,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
     });
 
     const {
@@ -93,28 +112,15 @@ describe('Create Rental', () => {
   });
 
   it('should not be able to rent twice to an user', async () => {
-    const [car1, car2] = await Promise.all([
-      carsRepositoryInMemory.create({
-        id: faker.datatype.uuid(),
-        brand: 'Brand',
-        category_id: '1',
-        daily_rate: 100,
-        description: 'Lorem Ipsum Dolor Sit Amet',
-        fine_amount: 100,
-        license_plate: 'XYZ1234',
-        name: 'Car A',
-      }),
-      carsRepositoryInMemory.create({
-        id: faker.datatype.uuid(),
-        brand: 'Brand',
-        category_id: '1',
-        daily_rate: 150,
-        description: 'Lorem Ipsum Dolor Sit Amet',
-        fine_amount: 200,
-        license_plate: 'XYZ2345',
-        name: 'Car B',
-      }),
-    ]);
+    const cars = await factory.attrsMany<Car>('Car', 2);
+    const [carA, carB] = await Promise.all(
+      cars.map((car) => {
+        return carsRepositoryInMemory.create({
+          id: faker.datatype.uuid(),
+          ...car,
+        });
+      })
+    );
     const expected_return_date = dayjs()
       .add(25, 'hours')
       .utc()
@@ -123,14 +129,14 @@ describe('Create Rental', () => {
 
     await createRentalUseCase.execute({
       user_id: '1',
-      car_id: car1.id,
+      car_id: carA.id,
       expected_return_date,
     });
 
     await expect(
       createRentalUseCase.execute({
         user_id: '1',
-        car_id: car2.id,
+        car_id: carB.id,
         expected_return_date,
       })
     ).rejects.toEqual(
@@ -139,14 +145,23 @@ describe('Create Rental', () => {
   });
 
   it('should not be able to create a new rental to a unavailable car', async () => {
+    const {
+      brand,
+      category_id,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
-      brand: 'Brand',
-      category_id: '1',
-      daily_rate: 100,
-      description: 'Lorem Ipsum Dolor Sit Amer',
-      fine_amount: 100,
-      license_plate: 'XYZ1234',
-      name: 'Car A',
+      brand,
+      category_id,
+      daily_rate,
+      description,
+      fine_amount,
+      license_plate,
+      name,
     });
     await carsRepositoryInMemory.updateAvailability(car.id, false);
 
