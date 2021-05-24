@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { Connection, Repository } from 'typeorm';
 import faker from 'faker';
+import { hash } from 'bcrypt';
 
 import app from '@shared/infra/http/app';
 import User from '@modules/accounts/infra/typeorm/entities/User';
@@ -36,7 +37,10 @@ describe('Send Forgot Password Mail Controller', () => {
     const user = await factory.attrs<User>('User');
 
     const { id: user_id } = await usersRepository.save(
-      usersRepository.create(user)
+      usersRepository.create({
+        ...user,
+        password: await hash(user.password, 8),
+      })
     );
 
     await request(app)
