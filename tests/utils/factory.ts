@@ -13,6 +13,15 @@ factory.define(
 );
 
 factory.define(
+  'Specification',
+  {},
+  {
+    name: faker.vehicle.type,
+    description: faker.lorem.sentence,
+  }
+);
+
+factory.define(
   'Category',
   {},
   {
