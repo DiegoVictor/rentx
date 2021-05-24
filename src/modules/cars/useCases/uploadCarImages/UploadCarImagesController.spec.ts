@@ -11,6 +11,7 @@ import User from '@modules/accounts/infra/typeorm/entities/User';
 import upload from '@config/upload';
 import CarImage from '@modules/cars/infra/typeorm/entities/CarImage';
 import Car from '@modules/cars/infra/typeorm/entities/Car';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Upload Car Images Controller', () => {
   let connection: Connection;
@@ -40,32 +41,17 @@ describe('Upload Car Images Controller', () => {
   });
 
   it('should be able to add an image to a car', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
+    const user = await factory.attrs<User>('User', { isAdmin: true });
+    let car = await factory.attrs<Car>('Car');
 
-    const [, car] = await Promise.all([
+    [, car] = await Promise.all([
       usersRepository.save(
         usersRepository.create({
           ...user,
           password: await hash(user.password, 8),
         })
       ),
-      carsRepository.save(
-        carsRepository.create({
-          name: faker.vehicle.model(),
-          brand: faker.vehicle.manufacturer(),
-          license_plate: faker.vehicle.vrm(),
-          description: faker.lorem.sentence(),
-          daily_rate: Number(faker.finance.amount()),
-          fine_amount: Number(faker.finance.amount()),
-        })
-      ),
+      carsRepository.save(carsRepository.create(car)),
     ]);
 
     const carImageFile = `${faker.datatype.uuid()}.png`;

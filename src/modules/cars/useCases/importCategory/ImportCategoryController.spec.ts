@@ -9,6 +9,7 @@ import app from '@shared/infra/http/app';
 import createConnection from '@shared/infra/typeorm';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import Category from '@modules/cars/infra/typeorm/entities/Category';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Import Category Controller', () => {
   let connection: Connection;
@@ -47,14 +48,7 @@ describe('Import Category Controller', () => {
   });
 
   it('should be able to import categories', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
+    const user = await factory.attrs<User>('User', { isAdmin: true });
 
     await usersRepository.save(
       usersRepository.create({
@@ -116,14 +110,7 @@ describe('Import Category Controller', () => {
   });
 
   it('should be able to import categories without duplicate', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
+    const user = await factory.attrs<User>('User', { isAdmin: true });
 
     await usersRepository.save(
       usersRepository.create({
@@ -189,14 +176,7 @@ describe('Import Category Controller', () => {
   });
 
   it('should not be able to import categories without valid csv', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
+    const user = await factory.attrs<User>('User', { isAdmin: true });
 
     await usersRepository.save(
       usersRepository.create({

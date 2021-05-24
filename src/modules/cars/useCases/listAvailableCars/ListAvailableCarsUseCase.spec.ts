@@ -1,4 +1,6 @@
+import Car from '@modules/cars/infra/typeorm/entities/Car';
 import CarsRepositoryInMemory from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
+import factory from '../../../../../tests/utils/factory';
 import ListAvailableCarsUseCase from './ListAvailableCarsUseCase';
 
 describe('List Available Cars', () => {
@@ -13,14 +15,23 @@ describe('List Available Cars', () => {
   });
 
   it('should be able to list all available cars', async () => {
+    const {
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
+      category_id,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
-      name: 'Car Name',
-      description: 'Lorem Ipsum Dolor Sit Amet',
-      daily_rate: 140.0,
-      license_plate: 'XYZ1234',
-      fine_amount: 100,
-      brand: 'Brand',
-      category_id: 'category_id',
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
+      category_id,
     });
 
     const cars = await listAvailableCarsUseCase.execute();
@@ -28,15 +39,23 @@ describe('List Available Cars', () => {
   });
 
   it('should be able to list all available cars by brand', async () => {
-    const brand = 'Brand';
-    const car = await carsRepositoryInMemory.create({
-      name: 'Car Name',
-      description: 'Lorem Ipsum Dolor Sit Amet',
-      daily_rate: 140.0,
-      license_plate: 'XYZ1234',
-      fine_amount: 100,
+    const {
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
       brand,
-      category_id: 'category_id',
+      category_id,
+    } = await factory.attrs<Car>('Car');
+    const car = await carsRepositoryInMemory.create({
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
+      category_id,
     });
 
     const cars = await listAvailableCarsUseCase.execute({ brand });
@@ -44,15 +63,23 @@ describe('List Available Cars', () => {
   });
 
   it('should be able to list all available cars by name', async () => {
-    const name = 'Car Name';
+    const {
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
+      category_id,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
       name,
-      description: 'Lorem Ipsum Dolor Sit Amet',
-      daily_rate: 140.0,
-      license_plate: 'XYZ1234',
-      fine_amount: 100,
-      brand: 'Brand',
-      category_id: 'category_id',
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
+      category_id,
     });
 
     const cars = await listAvailableCarsUseCase.execute({ name });
@@ -60,14 +87,22 @@ describe('List Available Cars', () => {
   });
 
   it('should be able to list all available cars by category', async () => {
-    const category_id = 'category_id';
+    const {
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
+      category_id,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
-      name: 'Car Name',
-      description: 'Lorem Ipsum Dolor Sit Amet',
-      daily_rate: 140.0,
-      license_plate: 'XYZ1234',
-      fine_amount: 100,
-      brand: 'Brand',
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
       category_id,
     });
 

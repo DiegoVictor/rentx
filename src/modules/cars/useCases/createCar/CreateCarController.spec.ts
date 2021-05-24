@@ -7,6 +7,7 @@ import app from '@shared/infra/http/app';
 import createConnection from '@shared/infra/typeorm';
 import Car from '@modules/cars/infra/typeorm/entities/Car';
 import User from '@modules/accounts/infra/typeorm/entities/User';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Create Car Controller', () => {
   let connection: Connection;
@@ -33,14 +34,7 @@ describe('Create Car Controller', () => {
   });
 
   it('should be able to create a new car', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
+    const user = await factory.attrs<User>('User', { isAdmin: true });
 
     await usersRepository.save(
       usersRepository.create({
@@ -49,15 +43,7 @@ describe('Create Car Controller', () => {
       })
     );
 
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
+    const car = await factory.attrs<Car>('Car');
 
     const {
       body: { token },
@@ -80,23 +66,8 @@ describe('Create Car Controller', () => {
   });
 
   it('should not be able to create a car with duplicated license plate', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-    };
+    const user = await factory.attrs<User>('User', { isAdmin: true });
+    const car = await factory.attrs<Car>('Car');
 
     await Promise.all([
       usersRepository.save(
