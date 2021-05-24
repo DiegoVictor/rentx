@@ -70,7 +70,7 @@ describe('Import Category Controller', () => {
           const data = chunk.toString('utf8');
           data.split('\n').forEach((line) => {
             if (line.length > 0) {
-              const [name, description] = line.split(',');
+              const [name, description] = line.replace('\r', '').split(',');
               categories.push({
                 name,
                 description,
@@ -132,7 +132,7 @@ describe('Import Category Controller', () => {
           const data = chunk.toString('utf8');
           data.split('\n').forEach((line) => {
             if (line.length > 0) {
-              const [name, description] = line.split(',');
+              const [name, description] = line.replace('\r', '').split(',');
               categories.push({
                 name,
                 description,
@@ -162,6 +162,8 @@ describe('Import Category Controller', () => {
     const responses = await Promise.all(
       categories.map(({ name }) => categoriesRepository.findOne({ name }))
     );
+
+    console.log(categories);
 
     categories.forEach(({ name, description }) => {
       expect(responses).toContainEqual({
