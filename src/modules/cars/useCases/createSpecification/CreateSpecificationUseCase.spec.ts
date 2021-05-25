@@ -3,6 +3,8 @@ import faker from 'faker';
 import SpecificationsRepositoryInMemory from '@modules/cars/repositories/in-memory/SpecificationsRepositoryInMemory';
 import AppError from '@shared/errors/AppError';
 import CreateSpecificationUseCase from './CreateSpecificationUseCase';
+import factory from '../../../../../tests/utils/factory';
+import Specification from '@modules/cars/infra/typeorm/entities/Specification';
 
 describe('Create Specification', () => {
   let createSpecificationUseCase: CreateSpecificationUseCase;
@@ -16,10 +18,7 @@ describe('Create Specification', () => {
   });
 
   it('should be able to create a new specification', async () => {
-    const specification = {
-      name: faker.vehicle.type(),
-      description: faker.lorem.sentence(),
-    };
+    const specification = await factory.attrs<Specification>('Specification');
 
     const createdSpecification = await createSpecificationUseCase.execute(
       specification
@@ -32,10 +31,7 @@ describe('Create Specification', () => {
   });
 
   it('should not be able to create a duplicated specification', async () => {
-    const specification = {
-      name: faker.vehicle.type(),
-      description: faker.lorem.sentence(),
-    };
+    const specification = await factory.attrs<Specification>('Specification');
 
     await createSpecificationUseCase.execute(specification);
 
