@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import faker from 'faker';
 
 import AppError from '@shared/errors/AppError';
@@ -25,7 +26,7 @@ describe('Profile User', () => {
 
     expect(result).toStrictEqual({
       id: expect.any(String),
-      avatar_url: null,
+      avatar_url: '',
       avatar: undefined,
       ...user,
     });
