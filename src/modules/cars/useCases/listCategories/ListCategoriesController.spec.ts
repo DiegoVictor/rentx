@@ -1,13 +1,19 @@
 import request from 'supertest';
-import { Connection, createConnection, getConnectionManager } from 'typeorm';
-import { hash } from 'bcrypt';
-import { v4 as uuidV4 } from 'uuid';
+import {
+  Connection,
+  createConnection,
+  getConnectionManager,
+  Repository,
+} from 'typeorm';
 
 import app from '@shared/infra/http/app';
+import User from '@modules/accounts/infra/typeorm/entities/User';
+import factory from '../../../../../tests/utils/factory';
+import Category from '@modules/cars/infra/typeorm/entities/Category';
+import { hash } from 'bcrypt';
 
 describe('List Categories Controller', () => {
-  const email = 'admin@rentx.com.br';
-  let password = 'admin';
+  let usersRepository: Repository<User>;
   let connection: Connection;
 
   beforeAll(async () => {
@@ -15,13 +21,7 @@ describe('List Categories Controller', () => {
 
     await connection.runMigrations();
 
-    const id = uuidV4();
-    const passwordHash = await hash(password, 8);
-
-    await connection.query(
-      `INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license)
-      values('${id}', 'admin', '${email}', '${passwordHash}', true, 'now()', '7623487234')`
-    );
+    usersRepository = connection.getRepository(User);
   });
 
   beforeEach(async () => {
@@ -40,23 +40,28 @@ describe('List Categories Controller', () => {
   });
 
   it('should be able to list categories', async () => {
+    const user = await factory.attrs<User>('User', { isAdmin: true });
+    await usersRepository.save(
+      usersRepository.create({
+        ...user,
+        password: await hash(user.password, 8),
+      })
+    );
+
     const {
       body: { token },
     } = await request(app).post('/v1/sessions').send({
-      email,
-      password,
+      email: user.email,
+      password: user.password,
     });
 
-    const category = {
-      name: 'Category A',
-      description: 'Lorem Ipsum Dolor Sit Amet',
-    };
+    const { name, description } = await factory.attrs<Category>('Category');
 
     await request(app)
       .post('/v1/categories')
       .set({ Authorization: `Bearer ${token}` })
       .expect(201)
-      .send(category);
+      .send({ name, description });
 
     const response = await request(app)
       .get('/v1/categories')
@@ -67,8 +72,9 @@ describe('List Categories Controller', () => {
 
     expect(response.body.length).toBe(1);
     expect(response.body).toContainEqual({
-      ...category,
       id: expect.any(String),
+      name,
+      description,
       created_at: expect.any(String),
     });
   });
