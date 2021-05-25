@@ -30,6 +30,10 @@ class User {
 
   @Expose({ name: 'avatar_url' })
   avatar_url(): string {
+    if (!this.avatar) {
+      return '';
+    }
+
     switch (process.env.STORAGE_DRIVER) {
       case 'local':
         return `${process.env.API_URL}/avatar/${this.avatar}`;
@@ -38,7 +42,7 @@ class User {
         return `${process.env.AWS_BUCKET_URL}/avatar/${this.avatar}`;
 
       default:
-        return null;
+        return '';
     }
   }
 
