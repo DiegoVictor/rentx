@@ -2,6 +2,8 @@ import CarsRepositoryInMemory from '@modules/cars/repositories/in-memory/CarsRep
 import SpecificationsRepositoryInMemory from '@modules/cars/repositories/in-memory/SpecificationsRepositoryInMemory';
 import AppError from '@shared/errors/AppError';
 import CreateCarSpecificationUseCase from './CreateCarSpecificationUseCase';
+import factory from '../../../../../tests/utils/factory';
+import Car from '@modules/cars/infra/typeorm/entities/Car';
 
 describe('Create Car Specification', () => {
   let createCarSpecificationUseCase: CreateCarSpecificationUseCase;
@@ -18,14 +20,23 @@ describe('Create Car Specification', () => {
   });
 
   it('should be able to add a new specification to a car', async () => {
+    const {
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
+      category_id,
+    } = await factory.attrs<Car>('Car');
     const car = await carsRepositoryInMemory.create({
-      name: 'Car',
-      description: 'Lorem Ipsum',
-      daily_rate: 100,
-      license_plate: 'XYZ1234',
-      fine_amount: 60,
-      brand: 'Brand',
-      category_id: 'category_id',
+      name,
+      description,
+      daily_rate,
+      license_plate,
+      fine_amount,
+      brand,
+      category_id,
     });
     const specification = await specificationsRepositoryInMemory.create({
       name: 'Specification',

@@ -8,6 +8,7 @@ import createConnection from '@shared/infra/typeorm';
 import Car from '@modules/cars/infra/typeorm/entities/Car';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import Specification from '@modules/cars/infra/typeorm/entities/Specification';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Create Car Specification Controller', () => {
   let connection: Connection;
@@ -46,25 +47,16 @@ describe('Create Car Specification Controller', () => {
       username: faker.internet.userName(),
       isAdmin: true,
     };
-    const [, car, specification] = await Promise.all([
+    let car = await factory.attrs<Car>('Car');
+
+    [, car, specification] = await Promise.all([
       usersRepository.save(
         usersRepository.create({
           ...user,
           password: await hash(user.password, 8),
         })
       ),
-      carsRepository.save(
-        carsRepository.create({
-          brand: faker.vehicle.manufacturer(),
-          category_id: null,
-          daily_rate: Number(faker.finance.amount()),
-          description: faker.lorem.sentence(),
-          fine_amount: Number(faker.finance.amount()),
-          license_plate: faker.vehicle.vrm(),
-          name: faker.vehicle.vehicle(),
-          available: true,
-        })
-      ),
+      carsRepository.save(carsRepository.create(car)),
       specificationsRepository.save(
         specificationsRepository.create({
           name: faker.lorem.word(),

@@ -7,6 +7,7 @@ import createConnection from '@shared/infra/typeorm';
 import Car from '@modules/cars/infra/typeorm/entities/Car';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import Category from '@modules/cars/infra/typeorm/entities/Category';
+import factory from '../../../../../tests/utils/factory';
 
 describe('List Available Cars Controller', () => {
   let connection: Connection;
@@ -43,16 +44,7 @@ describe('List Available Cars Controller', () => {
       password: faker.internet.password(),
       username: faker.internet.userName(),
     };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-      available: true,
-    };
+    const car = await factory.attrs<Car>('Car');
 
     await Promise.all([
       usersRepository.save(usersRepository.create(user)),
@@ -88,16 +80,7 @@ describe('List Available Cars Controller', () => {
       password: faker.internet.password(),
       username: faker.internet.userName(),
     };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-      available: true,
-    };
+    const car = await factory.attrs<Car>('Car');
 
     await Promise.all([
       usersRepository.save(usersRepository.create(user)),
@@ -133,16 +116,7 @@ describe('List Available Cars Controller', () => {
       password: faker.internet.password(),
       username: faker.internet.userName(),
     };
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id: null,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-      available: true,
-    };
+    const car = await factory.attrs<Car>('Car');
 
     await Promise.all([
       usersRepository.save(usersRepository.create(user)),
@@ -186,16 +160,7 @@ describe('List Available Cars Controller', () => {
     const { id: category_id } = await categoriesRepository.save(
       categoriesRepository.create(category)
     );
-    const car = {
-      brand: faker.vehicle.manufacturer(),
-      category_id,
-      daily_rate: Number(faker.finance.amount()),
-      description: faker.lorem.sentence(),
-      fine_amount: Number(faker.finance.amount()),
-      license_plate: faker.vehicle.vrm(),
-      name: faker.vehicle.vehicle(),
-      available: true,
-    };
+    const car = await factory.attrs<Car>('Car', { category_id });
 
     await Promise.all([
       usersRepository.save(usersRepository.create(user)),
