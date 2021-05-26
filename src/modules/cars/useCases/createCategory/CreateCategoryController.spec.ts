@@ -1,27 +1,24 @@
 import request from 'supertest';
-import { Connection, createConnection, getConnectionManager } from 'typeorm';
+import {
+  Connection,
+  createConnection,
+  getConnectionManager,
+  Repository,
+} from 'typeorm';
 import { hash } from 'bcrypt';
 import { v4 as uuidV4 } from 'uuid';
 
 import app from '@shared/infra/http/app';
 
 describe('Create Category Controller', () => {
-  const email = 'admin@rentx.com.br';
-  let password = 'admin';
   let connection: Connection;
+  let usersRepository: Repository<User>;
 
   beforeAll(async () => {
     connection = await createConnection();
 
     await connection.runMigrations();
-
-    const id = uuidV4();
-    const passwordHash = await hash(password, 8);
-
-    await connection.query(
-      `INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license)
-      values('${id}', 'admin', '${email}', '${passwordHash}', true, 'now()', '7623487234')`
-    );
+    usersRepository = connection.getRepository(User);
   });
 
   beforeEach(async () => {
