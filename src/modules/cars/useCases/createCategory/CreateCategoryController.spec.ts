@@ -6,7 +6,6 @@ import {
   Repository,
 } from 'typeorm';
 import { hash } from 'bcrypt';
-import { v4 as uuidV4 } from 'uuid';
 
 import app from '@shared/infra/http/app';
 
