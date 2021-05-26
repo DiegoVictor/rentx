@@ -1,3 +1,5 @@
+import faker from 'faker';
+
 import CarsRepositoryInMemory from '@modules/cars/repositories/in-memory/CarsRepositoryInMemory';
 import SpecificationsRepositoryInMemory from '@modules/cars/repositories/in-memory/SpecificationsRepositoryInMemory';
 import AppError from '@shared/errors/AppError';
@@ -55,8 +57,8 @@ describe('Create Car Specification', () => {
   });
 
   it('should not be able to add a new specification to a non existing car', async () => {
-    const car_id = '1';
-    const specifications_id = ['1'];
+    const car_id = faker.datatype.uuid();
+    const specifications_id = [faker.datatype.uuid()];
 
     await expect(
       createCarSpecificationUseCase.execute({
