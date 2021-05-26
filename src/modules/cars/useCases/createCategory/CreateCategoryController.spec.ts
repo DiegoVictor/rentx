@@ -40,11 +40,19 @@ describe('Create Category Controller', () => {
   });
 
   it('should be able to create a new category', async () => {
+    const user = await factory.attrs<User>('User', { isAdmin: true });
+    await usersRepository.save(
+      usersRepository.create({
+        ...user,
+        password: await hash(user.password, 8),
+      })
+    );
+
     const {
       body: { token },
     } = await request(app).post('/v1/sessions').send({
-      email,
-      password,
+      email: user.email,
+      password: user.password,
     });
 
     await request(app)
@@ -58,11 +66,19 @@ describe('Create Category Controller', () => {
   });
 
   it('should not be able to create a new category with duplicated name', async () => {
+    const user = await factory.attrs<User>('User', { isAdmin: true });
+    await usersRepository.save(
+      usersRepository.create({
+        ...user,
+        password: await hash(user.password, 8),
+      })
+    );
+
     const {
       body: { token },
     } = await request(app).post('/v1/sessions').send({
-      email,
-      password,
+      email: user.email,
+      password: user.password,
     });
 
     await request(app)

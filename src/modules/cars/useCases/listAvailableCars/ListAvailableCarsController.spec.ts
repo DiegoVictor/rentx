@@ -37,13 +37,7 @@ describe('List Available Cars Controller', () => {
   });
 
   it('should be able to list all available cars', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
+    const user = await factory.attrs<User>('User');
     const car = await factory.attrs<Car>('Car');
 
     await Promise.all([
@@ -73,13 +67,7 @@ describe('List Available Cars Controller', () => {
   });
 
   it('should be able to list all available cars by brand', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
+    const user = await factory.attrs<User>('User');
     const car = await factory.attrs<Car>('Car');
 
     await Promise.all([
@@ -109,13 +97,8 @@ describe('List Available Cars Controller', () => {
   });
 
   it('should be able to list all available cars by name', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
+    const user = await factory.attrs<User>('User');
+
     const car = await factory.attrs<Car>('Car');
 
     await Promise.all([
@@ -145,13 +128,7 @@ describe('List Available Cars Controller', () => {
   });
 
   it('should be able to list all available cars by category', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-    };
+    const user = await factory.attrs<User>('User');
     const category = {
       name: faker.vehicle.type(),
       description: faker.lorem.sentence(),

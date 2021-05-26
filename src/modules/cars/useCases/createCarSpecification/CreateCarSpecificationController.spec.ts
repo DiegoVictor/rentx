@@ -39,14 +39,7 @@ describe('Create Car Specification Controller', () => {
   });
 
   it('should be able to add a new specification to a car', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
+    const user = await factory.attrs<User>('User', { isAdmin: true });
     let car = await factory.attrs<Car>('Car');
 
     [, car, specification] = await Promise.all([
@@ -92,15 +85,8 @@ describe('Create Car Specification Controller', () => {
   });
 
   it('should not be able to add a new specification to a non existing car', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
-    const [, specification] = await Promise.all([
+    const user = await factory.attrs<User>('User', { isAdmin: true });
+    const [, { id }] = await Promise.all([
       usersRepository.save(
         usersRepository.create({
           ...user,

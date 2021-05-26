@@ -7,6 +7,7 @@ import app from '@shared/infra/http/app';
 import createConnection from '@shared/infra/typeorm';
 import User from '@modules/accounts/infra/typeorm/entities/User';
 import Specification from '@modules/cars/infra/typeorm/entities/Specification';
+import factory from '../../../../../tests/utils/factory';
 
 describe('Create Specification Controller', () => {
   let connection: Connection;
@@ -33,14 +34,7 @@ describe('Create Specification Controller', () => {
   });
 
   it('should be able to create a new specification', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
+    const user = await factory.attrs<User>('User', { isAdmin: true });
 
     await usersRepository.save(
       usersRepository.create({
@@ -74,14 +68,7 @@ describe('Create Specification Controller', () => {
   });
 
   it('should not be able to create a duplicated specification', async () => {
-    const user = {
-      email: faker.internet.email(),
-      name: faker.name.findName(),
-      driver_license: faker.random.alphaNumeric(11),
-      password: faker.internet.password(),
-      username: faker.internet.userName(),
-      isAdmin: true,
-    };
+    const user = await factory.attrs<User>('User', { isAdmin: true });
     const specification = {
       name: faker.vehicle.type(),
       description: faker.lorem.sentence(),
