@@ -1,5 +1,5 @@
 # Rentx
-[![Travis (.org)](https://img.shields.io/travis/DiegoVictor/rentx?logo=travis&style=flat-square)](https://travis-ci.org/DiegoVictor/rentx)
+![CircleCI](https://img.shields.io/circleci/build/github/DiegoVictor/rentx?style=flat-square&logo=circleci)
 [![typescript](https://img.shields.io/badge/typescript-4.2.3-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![postgres](https://img.shields.io/badge/postgres-8.5.1-326690?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![redis](https://img.shields.io/badge/redis-3.1.1-d92b21?style=flat-square&logo=redis&logoColor=white)](https://redis.io/)
