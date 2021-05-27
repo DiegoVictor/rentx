@@ -8,6 +8,9 @@ import {
 import { hash } from 'bcrypt';
 
 import app from '@shared/infra/http/app';
+import Category from '@modules/cars/infra/typeorm/entities/Category';
+import factory from '../../../../../tests/utils/factory';
+import User from '@modules/accounts/infra/typeorm/entities/User';
 
 describe('Create Category Controller', () => {
   let connection: Connection;
@@ -51,13 +54,14 @@ describe('Create Category Controller', () => {
       password: user.password,
     });
 
+    const { name, description } = await factory.attrs<Category>('Category');
     await request(app)
       .post('/v1/categories')
       .set({ Authorization: `Bearer ${token}` })
       .expect(201)
       .send({
-        name: 'Category A',
-        description: 'Lorem Ipsum Dolor Sit Amet',
+        name,
+        description,
       });
   });
 
@@ -77,13 +81,14 @@ describe('Create Category Controller', () => {
       password: user.password,
     });
 
+    const { name, description } = await factory.attrs<Category>('Category');
     await request(app)
       .post('/v1/categories')
       .set({ Authorization: `Bearer ${token}` })
       .expect(201)
       .send({
-        name: 'Category A',
-        description: 'Lorem Ipsum Dolor Sit Amet',
+        name,
+        description,
       });
 
     await request(app)
@@ -91,8 +96,8 @@ describe('Create Category Controller', () => {
       .set({ Authorization: `Bearer ${token}` })
       .expect(400)
       .send({
-        name: 'Category A',
-        description: 'Lorem Ipsum Dolor Sit Amet',
+        name,
+        description,
       });
   });
 });

@@ -129,10 +129,7 @@ describe('List Available Cars Controller', () => {
 
   it('should be able to list all available cars by category', async () => {
     const user = await factory.attrs<User>('User');
-    const category = {
-      name: faker.vehicle.type(),
-      description: faker.lorem.sentence(),
-    };
+    const category = await factory.attrs<Category>('Category');
 
     const { id: category_id } = await categoriesRepository.save(
       categoriesRepository.create(category)
