@@ -191,7 +191,7 @@ GET http://localhost:3333/v1/rentals
 |`/specifications`|POST|Body with user's `name` and `description`.|Create a new specification.|Bearer
 |`/users`|GET| - |Return user's profile.|Bearer
 |`/users`|POST|Body with user's.|Return user's `name`, `username`, `email`, `password` and `driver_license`.|:x:
-|`/users/avatar`|PATCH|Multipart payload with a atavar field with a image (See insomnia file for good example).|Bearer
+|`/users/avatar`|PATCH|Multipart payload with a atavar field with a image (See insomnia file for good example).|Update user avatar.|Bearer
 
 > Routes with `Bearer` as auth method expect an `Authorization` header. See [Bearer Token](#bearer-token) section for more information.
 
