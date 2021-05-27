@@ -6,6 +6,7 @@ import AppError from '@shared/errors/AppError';
 import CreateCarSpecificationUseCase from './CreateCarSpecificationUseCase';
 import factory from '../../../../../tests/utils/factory';
 import Car from '@modules/cars/infra/typeorm/entities/Car';
+import Specification from '@modules/cars/infra/typeorm/entities/Specification';
 
 describe('Create Car Specification', () => {
   let createCarSpecificationUseCase: CreateCarSpecificationUseCase;
@@ -40,10 +41,10 @@ describe('Create Car Specification', () => {
       brand,
       category_id,
     });
-    const specification = await specificationsRepositoryInMemory.create({
-      name: 'Specification',
-      description: 'Lorem Ipsum Dolor Sit Amet',
-    });
+
+    const specification = await specificationsRepositoryInMemory.create(
+      await factory.attrs<Specification>('Specification')
+    );
     const specifications_id = [specification.id];
 
     const carWithSpecifications = await createCarSpecificationUseCase.execute({

@@ -40,6 +40,7 @@ describe('Create Car Specification Controller', () => {
 
   it('should be able to add a new specification to a car', async () => {
     const user = await factory.attrs<User>('User', { isAdmin: true });
+    let specification = await factory.attrs<Specification>('Specification');
     let car = await factory.attrs<Car>('Car');
 
     [, car, specification] = await Promise.all([
@@ -51,10 +52,7 @@ describe('Create Car Specification Controller', () => {
       ),
       carsRepository.save(carsRepository.create(car)),
       specificationsRepository.save(
-        specificationsRepository.create({
-          name: faker.lorem.word(),
-          description: faker.lorem.sentence(),
-        })
+        specificationsRepository.create(specification)
       ),
     ]);
 
@@ -86,6 +84,7 @@ describe('Create Car Specification Controller', () => {
 
   it('should not be able to add a new specification to a non existing car', async () => {
     const user = await factory.attrs<User>('User', { isAdmin: true });
+    const specification = await factory.attrs<Specification>('Specification');
     const [, { id }] = await Promise.all([
       usersRepository.save(
         usersRepository.create({
@@ -94,10 +93,7 @@ describe('Create Car Specification Controller', () => {
         })
       ),
       specificationsRepository.save(
-        specificationsRepository.create({
-          name: faker.lorem.word(),
-          description: faker.lorem.sentence(),
-        })
+        specificationsRepository.create(specification)
       ),
     ]);
     const car_id = faker.datatype.uuid();
@@ -112,7 +108,7 @@ describe('Create Car Specification Controller', () => {
       .post(`/v1/cars/${car_id}/specifications`)
       .set({ Authorization: `Bearer ${token}` })
       .expect(400)
-      .send({ specifications_id: [specification.id] });
+      .send({ specifications_id: [id] });
 
     expect(response.body).toStrictEqual({ message: 'Car does not exists' });
   });

@@ -1,6 +1,5 @@
 import request from 'supertest';
 import { Connection, Repository } from 'typeorm';
-import faker from 'faker';
 import { hash } from 'bcrypt';
 
 import app from '@shared/infra/http/app';
@@ -43,10 +42,7 @@ describe('Create Specification Controller', () => {
       })
     );
 
-    const specification = {
-      name: faker.vehicle.type(),
-      description: faker.lorem.sentence(),
-    };
+    const specification = await factory.attrs<Specification>('Specification');
 
     const {
       body: { token },
@@ -69,10 +65,7 @@ describe('Create Specification Controller', () => {
 
   it('should not be able to create a duplicated specification', async () => {
     const user = await factory.attrs<User>('User', { isAdmin: true });
-    const specification = {
-      name: faker.vehicle.type(),
-      description: faker.lorem.sentence(),
-    };
+    const specification = await factory.attrs<Specification>('Specification');
 
     await Promise.all([
       usersRepository.save(
