@@ -173,7 +173,7 @@ GET http://localhost:3333/v1/rentals
 
 ## Routes
 |route|HTTP Method|params|description|auth method
-|:---|:---:|:---:|:---:|:---:|:---:
+|:---|:---:|:---:|:---:|:---:
 |`/sessions`|POST|Body with user's `email` and `password`.|Authenticates user, return a Bearer Token and user's name, email, token and refresh token.|:x:
 |`/refresh_token`|POST|Body with `refresh_token`.|Exchange an new token and refresh token|:x:
 |`/cars`|POST|Body with cars' `name`, `description`, `daily_rate`, `license_plate`, `fine_amount`, `brand`, `category_id`.|Create a new car.|Bearer
@@ -239,7 +239,7 @@ Request body:
 }
 ```
 
-* `POST /cars/:id/images`
+* `POST /cars/:id/images`<br>
 Image file(s)
 
 * `POST /categories`
@@ -252,7 +252,7 @@ Request body:
 }
 ```
 
-* `POST /categories/import`
+* `POST /categories/import`<br>
 CSV file
 
 * `POST /password/forgot`
@@ -306,7 +306,7 @@ Request body:
 }
 ```
 
-* `PATCH /users/avatar`
+* `PATCH /users/avatar`<br>
 Image file
 
 # Running the tests
