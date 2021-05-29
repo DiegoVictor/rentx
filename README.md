@@ -12,7 +12,7 @@
 [![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Rentx&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Frentx%2Fmaster%2FInsomnia_2021-05-19.json)
 
 
-Allows users to register yourself, manage their token, reset passwords, see your own profile, update your avatar, create cars and set specification and categories to it, import a bulk of categories at once, see available cars for rent, attach cars'images, rent a car, see users' previous rents and make a car devolution. The app has rate limit, friendly errors, use JWT to logins, validation, also a simple versioning was made.
+Allows users to register yourself, manage his token, reset passwords, see his own profile, update his avatar, create cars and set specification and categories to it, import a bulk of categories at once, see available cars for rent, attach cars'images, rent a car, see previous rents and make a car devolution. The app has rate limit, friendly errors, use JWT to logins, validation, also a simple versioning was made.
 
 ## Table of Contents
 * [Installing](#installing)
