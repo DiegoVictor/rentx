@@ -9,6 +9,67 @@
     }
   },
   "paths": {
+    "/v1/sessions": {
+      "post": {
+        "tags": ["Sessions"],
+        "summary": "User authentication",
+        "description": "User authentication",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Email or password incorrent"
+          }
+        }
+      }
+    },
+    "/v1/cars": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Create a new car",
+        "description": "Create a new car",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Car"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Car already exists!"
+          }
+        }
+      }
+    },
     "/v1/categories": {
       "post": {
         "tags": ["Category"],
@@ -132,67 +193,6 @@
           },
           "500": {
             "description": "Specification already exists"
-          }
-        }
-      }
-    },
-    "/v1/sessions": {
-      "post": {
-        "tags": ["Sessions"],
-        "summary": "User authentication",
-        "description": "User authentication",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Email or password incorrent"
-          }
-        }
-      }
-    },
-    "/v1/cars": {
-      "post": {
-        "tags": ["Cars"],
-        "summary": "Create a new car",
-        "description": "Create a new car",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Car"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Car already exists!"
           }
         }
       }
