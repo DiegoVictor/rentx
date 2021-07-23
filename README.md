@@ -44,16 +44,18 @@ $ npm install
 > Was installed and configured the [`eslint`](https://eslint.org/) and [`prettier`](https://prettier.io/) to keep the code clean and patterned.
 
 ## Configuring
-The application use two databases: [Postgres](https://www.postgresql.org/) and [Redis](https://redis.io/). For the fastest setup is recommended to use [docker](https://www.docker.com/), see below how to setup ever database.
-
+The application uses two databases: [Postgres](https://www.postgresql.org/) and [Redis](https://redis.io/). For the fastest setup is recommended to use [docker-compose](https://docs.docker.com/compose/), you just need to up all services:
+```
+$ docker-compose up -d
+```
 ### Redis
-Responsible to store data utilized by the rate limit middleware. To create a redis container:
+Responsible to store data utilized by the rate limit middleware. If for any reason you would like to create a Redis container instead of use `docker-compose`, you can do it by running the following command:
 ```
 $ docker run --name rentx-redis -d -p 6379:6379 redis:alpine
 ```
 
 ### Postgres
-Responsible to store all application data. To create a postgres container:
+Responsible to store all application data. If for any reason you would like to create a MongoDB container instead of use `docker-compose`, you can do it by running the following command:
 ```
 $ docker run --name rentx-postgres -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
 ```
@@ -82,11 +84,12 @@ In this file you may configure your Redis and Postgres database connection, JWT 
 |JWT_EXPIRATION_TIME|How long time will be the token valid. See [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#usage) repo for more information.|`15m`
 |REFRESH_TOKEN_SECRET|A alphanumeric random string. Used to create signed refresh tokens.| -
 |REFRESH_TOKEN_EXPIRATION_DAYS|How many days long will be the refresh token valid. See [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#usage) repo for more information.|30
-|DB_HOST|Postgres host.|`127.0.0.1`
+|DB_HOST|Postgres host.|`pg`
+|DB_PORT|Postgres port.|`5432`
 |DB_USER|Postgres user.| -
 |DB_PASSWORD|Postgres password.| -
 |DB_NAME|Application's database name.| -
-|REDIS_HOST|Redis host.| `127.0.0.1`
+|REDIS_HOST|Redis host.| `redis`
 |REDIS_PORT|Redis port.| `6379`
 |REDIS_PASSWORD|Redis password.| -
 |STORAGE_DRIVER|Set where the files will be stored, the available values are: `local` and `s3`.|`local`
