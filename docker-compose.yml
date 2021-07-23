@@ -1,32 +1,42 @@
-version: "3.7"
+version: "3.9"
 services:
-  database:
+  pg:
     image: postgres
-    container_name: database
+    container_name: pg
     restart: always
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=ignite
-      - POSTGRES_DB=rentx
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: rentx
     volumes:
-      - pgdata:/data/postgres
-    network_mode: host
-
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app_network
   redis:
     image: redis:alpine
     ports:
       - 6379:6379
-
+    volumes:
+      - redisdata:/data
+    networks:
+      - app_network
   app:
     build: .
-    container_name: rentx
+    depends_on:
+      - redis
+      - pg
     ports:
       - 3333:3333
     volumes:
-      - .:/usr/app
-    network_mode: host
+      - .:/usr/src/app
+    networks:
+      - app_network
 volumes:
   pgdata:
     driver: local
+  redisdata:
+    driver: local
+networks:
+  app_network:
+    driver: bridge
