@@ -13,7 +13,6 @@ jobs:
     steps:
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - checkout
-      - run: cp ormconfig.example.js ormconfig.js
       - run: npm install
       - run: npm run test
       - codecov/upload:
