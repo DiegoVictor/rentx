@@ -4,5 +4,4 @@ tmp/**/*
 !tmp/.gitkeep
 tests/coverage
 dist
-ormconfig.js
 .vscode
