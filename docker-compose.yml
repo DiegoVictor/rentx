@@ -15,6 +15,8 @@ services:
       - app_network
   redis:
     image: redis:alpine
+    container_name: redis
+    restart: restart
     ports:
       - 6379:6379
     volumes:
