@@ -2,9 +2,9 @@ version: 2.1
 orbs:
   codecov: codecov/codecov@1.1.1
 jobs:
-  build:
+  test:
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:16
       - image: circleci/postgres:11.8
         environment:
           POSTGRES_USER: postgres
@@ -13,11 +13,11 @@ jobs:
     steps:
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - checkout
-      - run: npm install
+      - run: npm ci
       - run: npm run test
       - codecov/upload:
           file: tests/coverage/*.json
 workflows:
-  build:
+  test:
     jobs:
-      - build
+      - test
