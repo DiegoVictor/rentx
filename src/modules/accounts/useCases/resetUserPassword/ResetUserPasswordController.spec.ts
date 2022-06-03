@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { Connection, Repository } from 'typeorm';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { compare, hash } from 'bcrypt';
 import dayjs from 'dayjs';
 

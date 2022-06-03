@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import upload from '@config/upload';
 import UsersRepositoryInMemory from '@modules/accounts/repositories/in-memory/UsersRepositoryInMemory';

@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import dayjs from 'dayjs';
 import { compare, hash } from 'bcrypt';
 

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import AppError from '@shared/errors/AppError';
 import UsersRepositoryInMemory from '@modules/accounts/repositories/in-memory/UsersRepositoryInMemory';

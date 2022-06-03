@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { sign } from 'jsonwebtoken';
 import dayjs from 'dayjs';
 

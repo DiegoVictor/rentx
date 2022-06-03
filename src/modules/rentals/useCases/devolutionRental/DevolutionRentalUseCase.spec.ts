@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import RentalsRepositoryInMemory from '@modules/rentals/repositories/in-memory/RentalsRepositoryInMemory';
 import DayjsDateProvider from '@shared/container/providers/DateProvider/implementations/DayjsDateProvider';
@@ -50,14 +50,11 @@ describe('Devolution Rental', () => {
       name,
     });
 
-    const {
-      user_id,
-      car_id,
-      expected_return_date,
-    } = await factory.attrs<Rental>('Rental', {
-      car_id: car.id,
-      expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
-    });
+    const { user_id, car_id, expected_return_date } =
+      await factory.attrs<Rental>('Rental', {
+        car_id: car.id,
+        expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
+      });
     const rental = await rentalsRepositoryInMemory.create({
       user_id,
       car_id,
@@ -89,14 +86,11 @@ describe('Devolution Rental', () => {
       name,
     });
 
-    const {
-      user_id,
-      car_id,
-      expected_return_date,
-    } = await factory.attrs<Rental>('Rental', {
-      car_id: car.id,
-      expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
-    });
+    const { user_id, car_id, expected_return_date } =
+      await factory.attrs<Rental>('Rental', {
+        car_id: car.id,
+        expected_return_date: dayjs().add(25, 'hours').utc().local().toDate(),
+      });
     const rental = await rentalsRepositoryInMemory.create({
       user_id,
       car_id,
@@ -128,18 +122,15 @@ describe('Devolution Rental', () => {
       name,
     });
 
-    const {
-      user_id,
-      car_id,
-      expected_return_date,
-    } = await factory.attrs<Rental>('Rental', {
-      car_id: car.id,
-      expected_return_date: dayjs()
-        .subtract(25, 'hours')
-        .utc()
-        .local()
-        .toDate(),
-    });
+    const { user_id, car_id, expected_return_date } =
+      await factory.attrs<Rental>('Rental', {
+        car_id: car.id,
+        expected_return_date: dayjs()
+          .subtract(25, 'hours')
+          .utc()
+          .local()
+          .toDate(),
+      });
     const rental = await rentalsRepositoryInMemory.create({
       user_id,
       car_id,

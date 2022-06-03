@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import CategoriesRepositoryInMemory from '@modules/cars/repositories/in-memory/CategoriesRepositoryInMemory';
 import ImportCategoryUseCase from './ImportCategoryUseCase';

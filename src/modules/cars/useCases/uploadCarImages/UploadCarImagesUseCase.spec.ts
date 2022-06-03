@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import upload from '@config/upload';
 import LocalStorageProvider from '@shared/container/providers/StorageProvider/implementations/LocalStorageProvider';

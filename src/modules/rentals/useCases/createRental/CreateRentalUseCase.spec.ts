@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import RentalsRepositoryInMemory from '@modules/rentals/repositories/in-memory/RentalsRepositoryInMemory';
 import AppError from '@shared/errors/AppError';
@@ -50,11 +50,8 @@ describe('Create Rental', () => {
       name,
     });
 
-    const {
-      user_id,
-      car_id,
-      expected_return_date,
-    } = await factory.attrs<Rental>('Rental', { car_id: car.id });
+    const { user_id, car_id, expected_return_date } =
+      await factory.attrs<Rental>('Rental', { car_id: car.id });
     const rental = await createRentalUseCase.execute({
       user_id,
       car_id,
@@ -89,11 +86,8 @@ describe('Create Rental', () => {
       name,
     });
 
-    const {
-      user_id,
-      car_id,
-      expected_return_date,
-    } = await factory.attrs<Rental>('Rental', { car_id: car.id });
+    const { user_id, car_id, expected_return_date } =
+      await factory.attrs<Rental>('Rental', { car_id: car.id });
     const rental = {
       user_id,
       car_id,
@@ -165,11 +159,8 @@ describe('Create Rental', () => {
     });
     await carsRepositoryInMemory.updateAvailability(car.id, false);
 
-    const {
-      user_id,
-      car_id,
-      expected_return_date,
-    } = await factory.attrs<Rental>('Rental', { car_id: car.id });
+    const { user_id, car_id, expected_return_date } =
+      await factory.attrs<Rental>('Rental', { car_id: car.id });
     const rental = {
       user_id,
       car_id,
