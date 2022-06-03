@@ -1,6 +1,5 @@
 import request from 'supertest';
 import { Connection, Repository } from 'typeorm';
-import faker from 'faker';
 import { hash } from 'bcrypt';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';

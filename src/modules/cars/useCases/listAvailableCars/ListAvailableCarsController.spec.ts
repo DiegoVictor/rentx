@@ -1,6 +1,5 @@
 import request from 'supertest';
 import { Connection, Repository } from 'typeorm';
-import faker from 'faker';
 
 import app from '@shared/infra/http/app';
 import createConnection from '@shared/infra/typeorm';
