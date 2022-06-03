@@ -17,13 +17,10 @@ describe('List Rental', () => {
   });
 
   it('should be able to retrieve my rentals', async () => {
-    const {
-      user_id,
-      car_id,
-      expected_return_date,
-    } = await factory.attrs<Rental>('Rental', {
-      expected_return_date: faker.date.future(1),
-    });
+    const { user_id, car_id, expected_return_date } =
+      await factory.attrs<Rental>('Rental', {
+        expected_return_date: faker.date.future(1),
+      });
     const rental = await rentalsRepositoryInMemory.create({
       user_id,
       car_id,
