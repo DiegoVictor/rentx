@@ -2,17 +2,19 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.2
   codecov: codecov/codecov@1.1.1
-jobs:
-  test:
+executors:
+  test-executor:
     docker:
-      - image: circleci/node:16
-      - image: circleci/postgres:11.8
+      - image: cimg/node:lts
+      - image: cimg/postgres:14.0
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: test
+jobs:
+  test:
+    executor: test-executor
     steps:
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
       - checkout
       - node/install-packages:
           cache-path: ~/rentx/node_modules
