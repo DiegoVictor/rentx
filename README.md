@@ -9,8 +9,7 @@
 [![coverage](https://img.shields.io/codecov/c/gh/DiegoVictor/rentx?logo=codecov&style=flat-square)](https://codecov.io/gh/DiegoVictor/rentx)
 [![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://raw.githubusercontent.com/DiegoVictor/rentx/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
-[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Rentx&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Frentx%2Fmain%2FInsomnia_2021-07-22.json)
-
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Rentx&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Frentx%2Fmain%2FInsomnia_2024-12-02.json)
 
 Allows users to register yourself, manage his token, reset passwords, see his own profile, update his avatar, create cars and set specification and categories to it, import a bulk of categories at once, see available cars for rent, attach cars'images, rent a car, see previous rents and make a car devolution. The app has rate limit, friendly errors, use JWT to logins, validation, also a simple versioning was made.
 
