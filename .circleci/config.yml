@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  codecov: codecov/codecov@1.1.1
+  codecov: codecov/codecov@4.2.0
 executors:
   test-executor:
     docker:
@@ -17,8 +17,7 @@ jobs:
       - checkout
       - run: npm ci
       - run: npm run test
-      - codecov/upload:
-          file: tests/coverage/*.json
+      - codecov/upload
 workflows:
   test:
     jobs:
