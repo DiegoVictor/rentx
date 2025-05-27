@@ -15,8 +15,7 @@ jobs:
     executor: test-executor
     steps:
       - checkout
-      - node/install-packages:
-          cache-path: ~/rentx/node_modules
+      - run: npm ci
       - run: npm run test
       - codecov/upload:
           file: tests/coverage/*.json
