@@ -16,10 +16,10 @@ Allows users to register yourself, manage his token, reset passwords, see his ow
 ## Table of Contents
 * [Installing](#installing)
   * [Configuring](#configuring)
+    * [.env](#env)
     * [Redis](#redis)
     * [Postgres](#postgres)
       * [Migrations](#migrations)
-    * [.env](#env)
     * [Rate Limit (Optional)](#rate-limit-optional)
 * [Usage](#usage)
   * [Error Handling](#error-handling)
@@ -47,29 +47,6 @@ The application uses two databases: [Postgres](https://www.postgresql.org/) and 
 ```
 $ docker-compose up -d
 ```
-### Redis
-Responsible to store data utilized by the rate limit middleware. If for any reason you would like to create a Redis container instead of use `docker-compose`, you can do it by running the following command:
-```
-$ docker run --name rentx-redis -d -p 6379:6379 redis:alpine
-```
-
-### Postgres
-Responsible to store all application data. If for any reason you would like to create a MongoDB container instead of use `docker-compose`, you can do it by running the following command:
-```
-$ docker run --name rentx-postgres -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
-```
-> Then create two databases: `rentx` and `test` (in case you would like to run the tests).
-
-#### Migrations
-Remember to run the database migrations:
-```
-$ yarn ts-node-dev ./node_modules/typeorm/cli.js migration:run
-```
-Or:
-```
-$ yarn typeorm migration:run
-```
-> See more information on [TypeORM Migrations](https://typeorm.io/#/migrations).
 
 ### .env
 In this file you may configure your Redis and Postgres database connection, JWT settings, the environment, app's port, mail and storage driver, aws settings (case be necessary) and a url to documentation (this will be returned with error responses, see [error section](#error-handling)). Rename the `.env.example` in the root directory to `.env` then just update with your settings.
@@ -99,6 +76,30 @@ In this file you may configure your Redis and Postgres database connection, JWT 
 |AWS_BUCKET_URL|Utilized to mount avatars' urls when using `s3` as `STORAGE_DRIVER`. Can also be found while creating the bucket.| -
 |AWS_REGION|You can see your default region in the navigation bar at the top right after login in the [AWS Management Console](https://sa-east-1.console.aws.amazon.com/console/home). Read [AWS service endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html) to know more about regions.| -
 |DOCS_URL|An url to docs where users can find more information about the app's internal code errors.|`https://github.com/DiegoVictor/rentx#errors-reference`
+
+### Redis
+Responsible to store data utilized by the rate limit middleware. If for any reason you would like to create a Redis container instead of use `docker-compose`, you can do it by running the following command:
+```
+$ docker run --name rentx-redis -d -p 6379:6379 redis:alpine
+```
+
+### Postgres
+Responsible to store all application data. If for any reason you would like to create a MongoDB container instead of use `docker-compose`, you can do it by running the following command:
+```
+$ docker run --name rentx-postgres -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
+```
+> Then create two databases: `rentx` and `test` (in case you would like to run the tests).
+
+#### Migrations
+Remember to run the database migrations:
+```
+$ yarn ts-node-dev ./node_modules/typeorm/cli.js migration:run
+```
+Or:
+```
+$ yarn typeorm migration:run
+```
+> See more information on [TypeORM Migrations](https://typeorm.io/#/migrations).
 
 ### Rate Limit (Optional)
 The project comes pre-configured, but you can adjust it as your needs.
